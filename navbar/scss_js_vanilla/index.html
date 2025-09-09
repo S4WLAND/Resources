@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refactored Navbar - Exact Replica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+
+    <header id="navbar" class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-content">
+                
+                <!-- Logo -->
+                <div class="logo">
+                    <div class="logo-inner">
+                        <span>StifhBL</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="desktop-menu">
+                    <a href="#home" class="menu-item active" data-name="Home">
+                        <span class="menu-item-emoji">🏠</span>
+                        <span>Home</span>
+                        <div class="active-indicator"></div>
+                        <div class="hover-indicator"></div>
+                    </a>
+                    <a href="#about" class="menu-item" data-name="About">
+                        <span class="menu-item-emoji">👤</span>
+                        <span>About</span>
+                        <div class="active-indicator"></div>
+                        <div class="hover-indicator"></div>
+                    </a>
+                    <a href="#skills" class="menu-item" data-name="Skills">
+                        <span class="menu-item-emoji">⚡</span>
+                        <span>Skills</span>
+                        <div class="active-indicator"></div>
+                        <div class="hover-indicator"></div>
+                    </a>
+                    <a href="#services" class="menu-item" data-name="Services">
+                        <span class="menu-item-emoji">🛠️</span>
+                        <span>Services</span>
+                        <div class="active-indicator"></div>
+                        <div class="hover-indicator"></div>
+                    </a>
+                    <a href="#engineering" class="menu-item" data-name="Engineering">
+                        <span class="menu-item-emoji">🏗️</span>
+                        <span>Engineering</span>
+                        <div class="active-indicator"></div>
+                        <div class="hover-indicator"></div>
+                    </a>
+                </div>
+
+                <!-- Actions -->
+                <div class="nav-actions">
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle">
+                        <div class="theme-toggle-track">
+                            <div id="theme-toggle-thumb" class="theme-toggle-thumb">
+                                <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                                <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- CTA Button -->
+                    <button class="cta-button desktop-cta">
+                        <span class="cta-text">Contact</span>
+                        <div class="cta-shine"></div>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                        <svg id="mobile-menu-open-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                        <svg id="mobile-menu-close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <a href="#home" class="mobile-menu-item" data-name="Home">
+                <span class="mobile-menu-emoji">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#about" class="mobile-menu-item" data-name="About">
+                <span class="mobile-menu-emoji">👤</span>
+                <span>About</span>
+            </a>
+            <a href="#skills" class="mobile-menu-item" data-name="Skills">
+                <span class="mobile-menu-emoji">⚡</span>
+                <span>Skills</span>
+            </a>
+            <a href="#services" class="mobile-menu-item" data-name="Services">
+                <span class="mobile-menu-emoji">🛠️</span>
+                <span>Services</span>
+            </a>
+            <a href="#engineering" class="mobile-menu-item" data-name="Engineering">
+                <span class="mobile-menu-emoji">🏗️</span>
+                <span>Engineering</span>
+            </a>
+            <button class="cta-button mobile-cta">
+                <span class="cta-text">Contact Me</span>
+                <div class="cta-shine"></div>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Hero Section -->
+            <section id="home" class="hero-section">
+                <h1 class="hero-title">Modern Navbar Design</h1>
+                <p class="hero-subtitle">Un navbar premium con glassmorphism, animaciones fluidas y diseño responsive. Scroll hacia abajo para ver el efecto de blur aumentado.</p>
+                <div class="hero-buttons">
+                    <button class="hero-button-primary">Ver Demo</button>
+                    <button class="hero-button-secondary">Documentación</button>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="about" class="features-section">
+                <div class="section-header">
+                    <h2 class="section-title">Características</h2>
+                    <p class="section-subtitle">Todas las especificaciones implementadas</p>
+                </div>
+                <div class="features-grid">
+                    <!-- Feature items will be similar, just showing one for brevity -->
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3 class="feature-title">Glassmorphism</h3>
+                        <p class="feature-description">Efecto de vidrio con backdrop-blur y transparencias suaves</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎭</div>
+                        <h3 class="feature-title">Animaciones Fluidas</h3>
+                        <p class="feature-description">Transiciones suaves con cubic-bezier y efectos hover</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">Responsive Design</h3>
+                        <p class="feature-description">Adaptable a desktop y mobile con menú overlay</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌙</div>
+                        <h3 class="feature-title">Theme Toggle</h3>
+                        <p class="feature-description">Cambio entre tema claro y oscuro con animación</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Estados Interactivos</h3>
+                        <p class="feature-description">Hover, active y scroll states con indicadores visuales</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3 class="feature-title">Paleta Premium</h3>
+                        <p class="feature-description">Colores vibrantes con gradientes y sombras</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Specs Section -->
+            <section id="skills" class="tech-specs-section">
+                <div class="section-header">
+                    <h2 class="section-title">Especificaciones Técnicas</h2>
+                </div>
+                <div class="tech-specs-grid">
+                    <div class="tech-spec-group">
+                        <h3 class="tech-spec-title-visual">Estilo Visual</h3>
+                        <ul class="tech-spec-list">
+                            <li>• Backdrop-blur con rgba(255,255,255,0.1)</li>
+                            <li>• Bordes sutiles con rgba(255,255,255,0.2)</li>
+                            <li>• Sombras con colores primary/accent</li>
+                            <li>• Border radius: 16px/8px</li>
+                        </ul>
+                    </div>
+                    <div class="tech-spec-group">
+                        <h3 class="tech-spec-title-interaction">Interacciones</h3>
+                        <ul class="tech-spec-list">
+                            <li>• Hover: escala 1.05, sombra aumentada</li>
+                            <li>• Active states con indicadores</li>
+                            <li>• Transiciones 0.3s cubic-bezier</li>
+                            <li>• Mobile stagger animations</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Components Section -->
+            <section id="services" class="components-section">
+                <div class="section-header">
+                    <h2 class="section-title">Componentes</h2>
+                </div>
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h4>Logo JP</h4>
+                        <p>Gradiente circular</p>
+                    </div>
+                    <div class="component-card">
+                        <h4>Menu Items</h4>
+                        <p>Emojis + texto</p>
+                    </div>
+                    <div class="component-card">
+                        <h4>Theme Toggle</h4>
+                        <p>Sol/Luna switch</p>
+                    </div>
+                    <div class="component-card">
+                        <h4>CTA Button</h4>
+                        <p>Gradiente premium</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technologies Section -->
+            <section id="engineering" class="technologies-section">
+                <div class="section-header">
+                    <h2 class="section-title">Tecnologías</h2>
+                </div>
+                <div class="technologies-list">
+                    <span>React</span>
+                    <span>Motion/React</span>
+                    <span>Tailwind CSS</span>
+                    <span>TypeScript</span>
+                    <span>Lucide Icons</span>
+                    <span>CSS Variables</span>
+                    <span>Glassmorphism</span>
+                    <span>Responsive Design</span>
+                </div>
+            </section>
+
+            <!-- Scroll Spacer -->
+            <div class="scroll-spacer">
+                <p>Scroll hacia arriba para ver el navbar sticky con efecto glassmorphism</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
