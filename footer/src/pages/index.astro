@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const modules = import.meta.glob("../components/Footer_*.astro");
+
+const toName = (path) => path.split("/").pop()?.replace(".astro", "") ?? "";
+const stripPrefix = (name) => name.replace(/^Footer[_-]?/i, "");
+const slugify = (name) =>
+  stripPrefix(name)
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/[_\s]+/g, "-")
+    .toLowerCase();
+const labelFromName = (name) => {
+  const base = stripPrefix(name)
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .trim();
+  return base ? `Footer ${base}` : "Footer";
+};
+
+const demos = Object.keys(modules)
+  .map((path) => {
+    const name = toName(path);
+    return {
+      label: labelFromName(name),
+      href: `/footer/${slugify(name)}`,
+    };
+  })
+  .sort((a, b) => a.label.localeCompare(b.label, "es", { numeric: true }));
+---
+
+<BaseLayout title="Galeria de footers">
+  <section class="page">
+    <h1>Variantes de footer</h1>
+    <p class="hint">
+      Crea un nuevo componente en <code>src/components</code> con el nombre
+      <code>Footer_*.astro</code> y aparecera aqui automaticamente.
+    </p>
+
+    <div class="grid">
+      {demos.map((demo) => (
+        <a class="demo" href={demo.href}>{demo.label}</a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .hint {
+    margin: 0 0 2rem;
+    color: #6b5f55;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .demo {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    border-radius: 14px;
+    border: 1px solid #e8dccf;
+    background: #fff7ef;
+    font-weight: 600;
+  }
+
+  .demo:hover {
+    border-color: #cf7b3a;
+    color: #7a3e16;
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import "../styles/global.css";
+
+const { title = "Footer demo", description = "Ejemplo de footer en Astro" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <span class="logo">footer.lab</span>
+        <nav>
+          <a href="/">Inicio</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    background: #fffaf3;
+    border-bottom: 1px solid #efe2d4;
+  }
+
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+  }
+
+  nav a {
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+
+  nav a:hover {
+    border-color: #e3d2bf;
+    background: #fff4e7;
+  }
+</style>

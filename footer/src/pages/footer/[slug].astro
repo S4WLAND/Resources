@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  const toName = (path) => path.split("/").pop()?.replace(".astro", "") ?? "";
+  const stripPrefix = (name) => name.replace(/^Footer[_-]?/i, "");
+  const slugify = (name) =>
+    stripPrefix(name)
+      .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+      .replace(/[_\s]+/g, "-")
+      .toLowerCase();
+  const labelFromName = (name) => {
+    const base = stripPrefix(name)
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .replace(/[_-]+/g, " ")
+      .trim();
+    return base ? `Footer ${base}` : "Footer";
+  };
+
+  const entries = import.meta.glob("../../components/Footer_*.astro");
+  return Object.keys(entries).map((path) => {
+    const name = toName(path);
+    return {
+      params: { slug: slugify(name) },
+      props: {
+        componentPath: path,
+        label: labelFromName(name),
+      },
+    };
+  });
+}
+
+const modules = import.meta.glob("../../components/Footer_*.astro", { eager: true });
+const { componentPath, label } = Astro.props;
+const module = modules[componentPath];
+const Footer = module?.default;
+
+if (!Footer) {
+  throw new Error(`No se encontro el componente para ${componentPath}`);
+}
+---
+
+<BaseLayout title={label}>
+  <div class="demo-toolbar">
+    <a class="back-link" href="/">← Volver al menu</a>
+  </div>
+  <Footer />
+</BaseLayout>
