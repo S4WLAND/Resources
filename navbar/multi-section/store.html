@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextKnow - Tienda con Navegación Global</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2C1810;
+            --secondary: #8B4513;
+            --accent: #D4A574;
+            --text-dark: #1a0f0a;
+            --bg-light: #F5F1E8;
+            --border: #E5DFD0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        /* HEADER TIENDA */
+        .store-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        /* LOGO CON DROPDOWN Y CONTEXTO */
+        .logo-section {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .logo-dropdown-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem 0.5rem 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--primary);
+        }
+        
+        .logo-dropdown-trigger:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        
+        .logo-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-brand {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-context {
+            font-size: 12px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .dropdown-arrow {
+            font-size: 10px;
+            opacity: 0.5;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-section:hover .dropdown-arrow {
+            transform: translateY(2px);
+        }
+        
+        /* DROPDOWN MENU */
+        .section-dropdown {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            min-width: 260px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .logo-section:hover .section-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+        
+        .dropdown-item.active {
+            background: rgba(212, 165, 116, 0.15);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .dropdown-item-icon {
+            font-size: 20px;
+        }
+        
+        .dropdown-item-text {
+            flex: 1;
+        }
+        
+        .dropdown-item-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .dropdown-item-desc {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+        
+        /* BÚSQUEDA */
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 3rem 0.875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.15);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            padding: 0.625rem 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .search-button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* ACCIONES HEADER */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            border: none;
+            background: white;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            color: var(--primary);
+        }
+        
+        .icon-button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            border: 2px solid var(--bg-light);
+        }
+        
+        /* SETTINGS DROPDOWN */
+        .settings-dropdown {
+            position: relative;
+        }
+        
+        .settings-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .settings-dropdown:hover .settings-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .settings-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(44, 24, 16, 0.5);
+            padding: 0.75rem 1.25rem 0.5rem;
+            font-weight: 600;
+        }
+        
+        .settings-item {
+            padding: 0.875rem 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-item:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+        
+        .auth-button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3);
+        }
+        
+        /* BREADCRUMB */
+        .breadcrumb {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 13px;
+        }
+        
+        .breadcrumb-link {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .breadcrumb-link:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumb-separator {
+            opacity: 0.4;
+        }
+        
+        .breadcrumb-current {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        /* CONTENT */
+        .store-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #e5dfd0, #d4c4b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-author {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .search-container {
+                order: 3;
+                flex-basis: 100%;
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-info {
+                display: none;
+            }
+            
+            .logo-dropdown-trigger {
+                padding: 0.5rem;
+            }
+            
+            .auth-button {
+                padding: 0.75rem 1rem;
+                font-size: 13px;
+            }
+            
+            .breadcrumb {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="/" class="breadcrumb-link">Inicio</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Tienda</span>
+        </div>
+    </div>
+
+    <!-- HEADER TIENDA -->
+    <header class="store-header">
+        <div class="header-container">
+            <!-- LOGO CON DROPDOWN -->
+            <div class="logo-section">
+                <div class="logo-dropdown-trigger">
+                    <div class="logo-icon">TK</div>
+                    <div class="logo-info">
+                        <div class="logo-brand">
+                            TextKnow
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="logo-context">Tienda</div>
+                    </div>
+                </div>
+                
+                <!-- DROPDOWN -->
+                <div class="section-dropdown">
+                    <a href="/" class="dropdown-item">
+                        <span class="dropdown-item-icon">🏠</span>
+                        <div class="dropdown-item-text">
+                            <div class="dropdown-item-title">Inicio</div>
+                            <div class="dropdown-item-desc">Volver al home</div>
+                        </div>
+                    </a>
+                    <a href="/tienda" class="dropdown-item active">
+                        <span class="dropdown-item-icon">📚</span>
+                        <div class="dropdown-item-text">
+                            <div class="dropdown-item-title">Tienda</div>
+                            <div class="dropdown-item-desc">Catálogo de libros</div>
+                        </div>
+                    </a>
+                    <a href="/conferencias" class="dropdown-item">
+                        <span class="dropdown-item-icon">🎤</span>
+                        <div class="dropdown-item-text">
+                            <div class="dropdown-item-title">Conferencias</div>
+                            <div class="dropdown-item-desc">Solicita capacitación</div>
+                        </div>
+                    </a>
+                    <a href="/anuncios" class="dropdown-item">
+                        <span class="dropdown-item-icon">📢</span>
+                        <div class="dropdown-item-text">
+                            <div class="dropdown-item-title">Anuncios</div>
+                            <div class="dropdown-item-desc">Eventos y novedades</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- BÚSQUEDA -->
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Buscar libros, autores, categorías..."
+                        aria-label="Buscar productos"
+                    >
+                    <button class="search-button" aria-label="Buscar">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- ACCIONES -->
+            <div class="header-actions">
+                <!-- Settings -->
+                <div class="settings-dropdown">
+                    <button class="icon-button" aria-label="Configuración">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                    <div class="settings-menu">
+                        <div class="settings-label">Idioma</div>
+                        <div class="settings-item">🇪🇸 Español</div>
+                        <div class="settings-item">🇺🇸 English</div>
+                        <div class="settings-label">Tema</div>
+                        <div class="settings-item">☀️ Modo Claro</div>
+                        <div class="settings-item">🌙 Modo Oscuro</div>
+                    </div>
+                </div>
+                
+                <!-- Auth -->
+                <button class="auth-button">Ingresar</button>
+                
+                <!-- Carrito -->
+                <button class="icon-button" aria-label="Carrito">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span class="cart-badge">3</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main class="store-content">
+        <h2 style="font-family: 'Crimson Pro', serif; font-size: 2.5rem; margin-bottom: 2rem;">
+            Libros Destacados
+        </h2>
+        
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">📖</div>
+                <div class="product-info">
+                    <h3 class="product-title">El Camino del Desarrollo</h3>
+                    <p class="product-author">Juan Pérez</p>
+                    <div class="product-price">$29.900</div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">📚</div>
+                <div class="product-info">
+                    <h3 class="product-title">Familias Transformadas</h3>
+                    <p class="product-author">María González</p>
+                    <div class="product-price">$34.500</div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">📕</div>
+                <div class="product-info">
+                    <h3 class="product-title">Liderazgo Consciente</h3>
+                    <p class="product-author">Carlos Rodríguez</p>
+                    <div class="product-price">$39.900</div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">📘</div>
+                <div class="product-info">
+                    <h3 class="product-title">Pedagogía Transformadora</h3>
+                    <p class="product-author">Ana Martínez</p>
+                    <div class="product-price">$42.000</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
