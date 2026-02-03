@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextKnow - Categoría: Español</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-container {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 0;
+        }
+
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #007bff;
+        }
+
+        .breadcrumb-separator {
+            color: #999;
+        }
+
+        .breadcrumb-current {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .result-count {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 24px;
+            height: fit-content;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .filter-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-filter {
+            font-size: 13px;
+            color: #007bff;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .filter-count {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* Main Content */
+        .main-content {
+            min-width: 0;
+        }
+
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .sort-select {
+            padding: 10px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+        }
+
+        .product-image-container {
+            position: relative;
+            padding-top: 133%;
+            background: #f8f8f8;
+            overflow: hidden;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff5722;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            z-index: 1;
+        }
+
+        .product-badge.new {
+            background: #4caf50;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            z-index: 1;
+        }
+
+        .wishlist-btn:hover {
+            background: #ff5722;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        .rating-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .original-price {
+            font-size: 15px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 48px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="tienda-principal.html">Tienda</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="#">Idioma</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Español</span>
+        </nav>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Libros en Español</h1>
+            <p class="page-description">Descubre nuestra amplia colección de libros en español, desde textos bíblicos hasta material para toda la familia.</p>
+            <p class="result-count">Mostrando 1-15 de 301 productos</p>
+        </div>
+
+        <!-- Content Layout -->
+        <div class="content-layout">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <div class="filter-section">
+                    <div class="filter-header">
+                        Filtros
+                        <span class="clear-filter">Limpiar todo</span>
+                    </div>
+
+                    <!-- Categories Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Categorías</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-iglesia">
+                            <label for="cat-iglesia">Iglesia</label>
+                            <span class="filter-count">(301)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-familia">
+                            <label for="cat-familia">Familia</label>
+                            <span class="filter-count">(57)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-ninos">
+                            <label for="cat-ninos">Niños</label>
+                            <span class="filter-count">(124)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-salud">
+                            <label for="cat-salud">Salud</label>
+                            <span class="filter-count">(53)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-espiritual">
+                            <label for="cat-espiritual">Crecimiento espiritual</label>
+                            <span class="filter-count">(88)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-jovenes">
+                            <label for="cat-jovenes">Jóvenes</label>
+                            <span class="filter-count">(55)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-teologia">
+                            <label for="cat-teologia">Doctrinas y Teología</label>
+                            <span class="filter-count">(127)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-profecia">
+                            <label for="cat-profecia">Espíritu de Profecía</label>
+                            <span class="filter-count">(76)</span>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Precio</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-1">
+                            <label for="price-1">Menos de $10</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-2">
+                            <label for="price-2">$10 - $25</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-3">
+                            <label for="price-3">$25 - $50</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-4">
+                            <label for="price-4">Más de $50</label>
+                        </div>
+                    </div>
+
+                    <!-- Special Offers -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Ofertas</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="discount">
+                            <label for="discount">Con descuento</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="new">
+                            <label for="new">Nuevos</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="bestseller">
+                            <label for="bestseller">Más vendidos</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="view-options">
+                        <button class="view-btn active" title="Vista en cuadrícula">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <rect x="2" y="2" width="7" height="7" rx="1"/>
+                                <rect x="11" y="2" width="7" height="7" rx="1"/>
+                                <rect x="2" y="11" width="7" height="7" rx="1"/>
+                                <rect x="11" y="11" width="7" height="7" rx="1"/>
+                            </svg>
+                        </button>
+                        <button class="view-btn" title="Vista en lista">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <rect x="2" y="3" width="16" height="2" rx="1"/>
+                                <rect x="2" y="9" width="16" height="2" rx="1"/>
+                                <rect x="2" y="15" width="16" height="2" rx="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <select class="sort-select">
+                        <option>Ordenar por: Características</option>
+                        <option>Precio: Menor a Mayor</option>
+                        <option>Precio: Mayor a Menor</option>
+                        <option>Más Vendidos</option>
+                        <option>Mejor Valorados</option>
+                        <option>Más Recientes</option>
+                    </select>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="product-grid">
+                    <!-- Products -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23f4a261' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='white'%3E35 LEMAS%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">35 LEMAS - VITAL</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$10.29</span>
+                                <span class="original-price">$14.70</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%2390be6d' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3EVITAL Colección%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Crecimiento</div>
+                            <h3 class="product-title">COLECCIÓN PARA TENER VIDA ABUNDANTE</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(18)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$49.00</span>
+                                <span class="original-price">$70.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <!-- Repeat more products -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%2343aa8b' width='300' height='400'/%3E%3Ctext x='50%25' y='40%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='white'%3EVITAL%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='white'%3EComer Sano%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Salud</div>
+                            <h3 class="product-title">VITAL - COLECCIÓN</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-count">(12)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$40.60</span>
+                                <span class="original-price">$58.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23f4845f' width='300' height='400'/%3E%3Ctext x='50%25' y='35%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3EEl difícil arte%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Ede ser%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='white'%3EPADRES%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EL DIFÍCIL ARTE DE SER PADRES</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(35)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$18.20</span>
+                                <span class="original-price">$26.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge new">NUEVO</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23d4a5a5' width='300' height='400'/%3E%3Ctext x='50%25' y='40%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3EEl lenguaje%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Edel AMOR%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EL LENGUAJE DEL AMOR</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(48)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$13.02</span>
+                                <span class="original-price">$18.60</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%2377a6b6' width='300' height='400'/%3E%3Ctext x='50%25' y='30%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='white'%3EEn mi casa%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3E¿quién manda%3C/text%3E%3Ctext x='50%25' y='70%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Ea quién?%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EN MI CASA ¿QUIÉN MANDA A QUIÉN?</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-count">(22)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$13.30</span>
+                                <span class="original-price">$19.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="page-btn">←</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">...</button>
+                    <button class="page-btn">21</button>
+                    <button class="page-btn">→</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Interactivity
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = '✓ Agregado';
+                this.style.background = '#4caf50';
+                setTimeout(() => {
+                    this.textContent = 'Agregar al carrito';
+                    this.style.background = '';
+                }, 2000);
+            });
+        });
+
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = this.textContent === '♡' ? '♥' : '♡';
+                this.style.color = this.textContent === '♥' ? '#ff5722' : '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de búsqueda: "familia" - TextKnow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-container {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 0;
+        }
+
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #007bff;
+        }
+
+        .breadcrumb-separator {
+            color: #999;
+        }
+
+        .breadcrumb-current {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Search Header */
+        .search-header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .search-query {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .search-query strong {
+            color: #667eea;
+        }
+
+        .search-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .result-count {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-chip .remove {
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
+        /* Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 24px;
+            height: fit-content;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .filter-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-filter {
+            font-size: 13px;
+            color: #007bff;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .filter-count {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* Main Content */
+        .main-content {
+            min-width: 0;
+        }
+
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .sort-select {
+            padding: 10px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Suggestion Section */
+        .suggestion-section {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .suggestion-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f57f17;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .suggestion-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-link {
+            padding: 6px 14px;
+            background: white;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #f57f17;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .suggestion-link:hover {
+            background: #ffc107;
+            color: white;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+        }
+
+        .product-image-container {
+            position: relative;
+            padding-top: 133%;
+            background: #f8f8f8;
+            overflow: hidden;
+        }
+
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff5722;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            z-index: 1;
+        }
+
+        .product-badge.new {
+            background: #4caf50;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            z-index: 1;
+        }
+
+        .wishlist-btn:hover {
+            background: #ff5722;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-title mark {
+            background: #fff9c4;
+            color: inherit;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        .rating-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .original-price {
+            font-size: 15px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #5568d3;
+        }
+
+        /* No Results */
+        .no-results {
+            background: white;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .no-results-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .no-results p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .no-results-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 48px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="tienda-principal.html">Tienda</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Resultados de búsqueda</span>
+        </nav>
+    </div>
+
+    <div class="container">
+        <!-- Search Header -->
+        <div class="search-header">
+            <p class="search-query">Resultados de búsqueda para: <strong>"familia"</strong></p>
+            <h1 class="search-title">Libros sobre Familia</h1>
+            <p class="result-count">Encontramos 57 productos que coinciden con tu búsqueda</p>
+            
+            <div class="search-filters">
+                <div class="filter-chip active">
+                    Español <span class="remove">×</span>
+                </div>
+                <div class="filter-chip">
+                    Todos los idiomas
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggestion Section -->
+        <div class="suggestion-section">
+            <div class="suggestion-title">💡 Sugerencias relacionadas</div>
+            <p class="suggestion-text">Quizás también te interese:</p>
+            <div class="suggestion-links">
+                <a href="#" class="suggestion-link">Crianza de hijos</a>
+                <a href="#" class="suggestion-link">Matrimonio</a>
+                <a href="#" class="suggestion-link">Padres</a>
+                <a href="#" class="suggestion-link">Relaciones familiares</a>
+                <a href="#" class="suggestion-link">Educación infantil</a>
+            </div>
+        </div>
+
+        <!-- Content Layout -->
+        <div class="content-layout">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <div class="filter-section">
+                    <div class="filter-header">
+                        Refinar búsqueda
+                        <span class="clear-filter">Limpiar</span>
+                    </div>
+
+                    <!-- Language Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Idioma</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="lang-es" checked>
+                            <label for="lang-es">Español</label>
+                            <span class="filter-count">(57)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="lang-en">
+                            <label for="lang-en">English</label>
+                            <span class="filter-count">(23)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="lang-pt">
+                            <label for="lang-pt">Português</label>
+                            <span class="filter-count">(15)</span>
+                        </div>
+                    </div>
+
+                    <!-- Categories Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Categorías</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-familia">
+                            <label for="cat-familia">Familia</label>
+                            <span class="filter-count">(57)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-ninos">
+                            <label for="cat-ninos">Niños</label>
+                            <span class="filter-count">(32)</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="cat-jovenes">
+                            <label for="cat-jovenes">Jóvenes</label>
+                            <span class="filter-count">(18)</span>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Precio</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-1">
+                            <label for="price-1">Menos de $10</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-2">
+                            <label for="price-2">$10 - $25</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-3">
+                            <label for="price-3">$25 - $50</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price-4">
+                            <label for="price-4">Más de $50</label>
+                        </div>
+                    </div>
+
+                    <!-- Availability Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Disponibilidad</div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="stock">
+                            <label for="stock">En stock</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="discount">
+                            <label for="discount">Con descuento</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="view-options">
+                        <button class="view-btn active" title="Vista en cuadrícula">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <rect x="2" y="2" width="7" height="7" rx="1"/>
+                                <rect x="11" y="2" width="7" height="7" rx="1"/>
+                                <rect x="2" y="11" width="7" height="7" rx="1"/>
+                                <rect x="11" y="11" width="7" height="7" rx="1"/>
+                            </svg>
+                        </button>
+                        <button class="view-btn" title="Vista en lista">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <rect x="2" y="3" width="16" height="2" rx="1"/>
+                                <rect x="2" y="9" width="16" height="2" rx="1"/>
+                                <rect x="2" y="15" width="16" height="2" rx="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <select class="sort-select">
+                        <option>Relevancia</option>
+                        <option>Precio: Menor a Mayor</option>
+                        <option>Precio: Mayor a Menor</option>
+                        <option>Más Vendidos</option>
+                        <option>Mejor Valorados</option>
+                        <option>Más Recientes</option>
+                    </select>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23f4a261' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='white'%3E35 LEMAS%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">35 LEMAS para <mark>Familia</mark> - VITAL</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$10.29</span>
+                                <span class="original-price">$14.70</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23f4845f' width='300' height='400'/%3E%3Ctext x='50%25' y='35%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3EEl difícil arte%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Ede ser%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='white'%3EPADRES%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EL DIFÍCIL ARTE DE SER PADRES</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(35)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$18.20</span>
+                                <span class="original-price">$26.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge new">NUEVO</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23d4a5a5' width='300' height='400'/%3E%3Ctext x='50%25' y='40%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3EEl lenguaje%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Edel AMOR%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EL LENGUAJE DEL AMOR en la <mark>Familia</mark></h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-count">(48)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$13.02</span>
+                                <span class="original-price">$18.60</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <span class="product-badge">-30%</span>
+                            <button class="wishlist-btn">♡</button>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%2377a6b6' width='300' height='400'/%3E%3Ctext x='50%25' y='30%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='white'%3EEn mi casa%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3E¿quién manda%3C/text%3E%3Ctext x='50%25' y='70%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='white'%3Ea quién?%3C/text%3E%3C/svg%3E" alt="Producto" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">Familia</div>
+                            <h3 class="product-title">EN MI CASA ¿QUIÉN MANDA A QUIÉN?</h3>
+                            <div class="product-rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-count">(22)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">$13.30</span>
+                                <span class="original-price">$19.00</span>
+                            </div>
+                            <button class="add-to-cart-btn">Agregar al carrito</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="page-btn">←</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">→</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Interactivity
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = '✓ Agregado';
+                this.style.background = '#4caf50';
+                setTimeout(() => {
+                    this.textContent = 'Agregar al carrito';
+                    this.style.background = '';
+                }, 2000);
+            });
+        });
+
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = this.textContent === '♡' ? '♥' : '♡';
+                this.style.color = this.textContent === '♥' ? '#ff5722' : '';
+            });
+        });
+    </script>
+</body>
+</html>
