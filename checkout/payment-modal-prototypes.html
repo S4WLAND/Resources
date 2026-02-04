@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Modal Prototypes - Professional Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .main-desc {
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+
+        .prototypes-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+        }
+
+        .prototype-container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .prototype-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #6366f1;
+        }
+
+        .prototype-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .prototype-desc {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .modal-preview {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 700px;
+        }
+
+        /* Payment Modal Base */
+        .payment-modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .payment-header {
+            padding: 28px 32px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .payment-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .payment-subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .payment-steps {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 32px;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: #a0aec0;
+        }
+
+        .step.active {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .step.completed {
+            color: #48bb78;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .step.active .step-number {
+            background: #6366f1;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #48bb78;
+            color: white;
+        }
+
+        .payment-body {
+            padding: 32px;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+        }
+
+        .payment-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-option:hover {
+            border-color: #cbd5e0;
+        }
+
+        .payment-option.selected {
+            border-color: #6366f1;
+            background: #f0f4ff;
+        }
+
+        .payment-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e0;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .payment-option.selected .payment-radio {
+            border-color: #6366f1;
+        }
+
+        .payment-option.selected .payment-radio::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #6366f1;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .payment-option-content {
+            flex: 1;
+        }
+
+        .payment-option-title {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .payment-option-desc {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 28px;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        /* Card Details Form */
+        .card-details {
+            margin-top: 24px;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row.two-col {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            font-size: 1.25rem;
+        }
+
+        /* Order Summary */
+        .order-summary-mini {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .summary-label {
+            color: #718096;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 2px solid #e2e8f0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .total-amount {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Payment Footer */
+        .payment-footer {
+            padding: 24px 32px;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 16px;
+        }
+
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #718096;
+            font-size: 0.875rem;
+        }
+
+        .back-button {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .back-button:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        /* Dark Theme */
+        .dark-theme .payment-modal {
+            background: #1a202c;
+        }
+
+        .dark-theme .payment-header {
+            border-bottom-color: #2d3748;
+        }
+
+        .dark-theme .payment-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .payment-subtitle {
+            color: #a0aec0;
+        }
+
+        .dark-theme .payment-steps {
+            background: #2d3748;
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-theme .payment-body {
+            background: #1a202c;
+        }
+
+        .dark-theme .section-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .payment-option {
+            border-color: #4a5568;
+            background: #2d3748;
+        }
+
+        .dark-theme .payment-option.selected {
+            background: #2d3748;
+            border-color: #6366f1;
+        }
+
+        .dark-theme .payment-option-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .payment-option-desc {
+            color: #a0aec0;
+        }
+
+        .dark-theme .form-input {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #f7fafc;
+        }
+
+        .dark-theme .order-summary-mini {
+            background: #2d3748;
+        }
+
+        .dark-theme .summary-value {
+            color: #f7fafc;
+        }
+
+        .dark-theme .summary-total {
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .payment-footer {
+            background: #2d3748;
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .back-button {
+            background: #1a202c;
+            color: #cbd5e0;
+            border-color: #4a5568;
+        }
+
+        /* Compact Variant */
+        .compact .payment-modal {
+            max-width: 420px;
+        }
+
+        .compact .payment-header,
+        .compact .payment-body,
+        .compact .payment-footer {
+            padding: 20px 24px;
+        }
+
+        .compact .payment-title {
+            font-size: 1.5rem;
+        }
+
+        .compact .section-title {
+            font-size: 1rem;
+        }
+
+        /* Minimal Variant */
+        .minimal .payment-steps {
+            display: none;
+        }
+
+        .minimal .payment-option {
+            padding: 14px 16px;
+        }
+
+        @media (max-width: 768px) {
+            .prototypes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-preview {
+                padding: 20px 10px;
+                min-height: 600px;
+            }
+
+            .form-row.two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <h1 class="main-title">💳 Payment Modal Prototypes</h1>
+        <p class="main-desc">Professional checkout designs for e-commerce platforms</p>
+    </div>
+
+    <div class="prototypes-grid">
+        <!-- Variant 1: Complete Payment Flow -->
+        <div class="prototype-container">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 1: Flujo Completo</h2>
+                <p class="prototype-desc">Modal con pasos, múltiples métodos de pago y resumen</p>
+            </div>
+            <div class="modal-preview">
+                <div class="payment-modal">
+                    <div class="payment-header">
+                        <h2 class="payment-title">Finalizar Compra</h2>
+                        <p class="payment-subtitle">Completa tu información de pago de forma segura</p>
+                    </div>
+
+                    <div class="payment-steps">
+                        <div class="step completed">
+                            <div class="step-number">✓</div>
+                            <span>Carrito</span>
+                        </div>
+                        <div class="step active">
+                            <div class="step-number">2</div>
+                            <span>Pago</span>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <span>Confirmación</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-body">
+                        <div class="order-summary-mini">
+                            <div class="summary-item">
+                                <span class="summary-label">3 artículos</span>
+                                <span class="summary-value">$143.65</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Envío</span>
+                                <span class="summary-value">$5.99</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span class="total-amount">$149.64</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-methods">
+                            <h3 class="section-title">Método de Pago</h3>
+                            
+                            <div class="payment-option selected">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Tarjeta de Crédito/Débito</div>
+                                    <div class="payment-option-desc">Pago seguro con todas las tarjetas</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">💳</div>
+                                    <div class="payment-icon">VISA</div>
+                                    <div class="payment-icon">MC</div>
+                                    <div class="payment-icon">AMEX</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">PayPal</div>
+                                    <div class="payment-option-desc">Paga con tu cuenta PayPal</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon" style="width:60px">PayPal</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Transferencia Bancaria</div>
+                                    <div class="payment-option-desc">Pago directo desde tu banco</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">🏦</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details">
+                            <h3 class="section-title">Detalles de la Tarjeta</h3>
+                            
+                            <div class="form-row">
+                                <label class="form-label">Número de Tarjeta</label>
+                                <div class="input-with-icon">
+                                    <input type="text" class="form-input" placeholder="1234 5678 9012 3456">
+                                    <span class="input-icon">💳</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label class="form-label">Nombre en la Tarjeta</label>
+                                <input type="text" class="form-input" placeholder="Juan Pérez">
+                            </div>
+
+                            <div class="form-row two-col">
+                                <div>
+                                    <label class="form-label">Fecha de Vencimiento</label>
+                                    <input type="text" class="form-input" placeholder="MM/AA">
+                                </div>
+                                <div>
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-input" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-footer">
+                        <button class="pay-button">Pagar $149.64</button>
+                        <button class="back-button">Volver al Carrito</button>
+                        <div class="security-info">
+                            <span>🔒</span>
+                            <span>Pago 100% seguro y encriptado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 2: Dark Theme -->
+        <div class="prototype-container">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 2: Tema Oscuro</h2>
+                <p class="prototype-desc">Diseño elegante optimizado para modo nocturno</p>
+            </div>
+            <div class="modal-preview dark-theme">
+                <div class="payment-modal">
+                    <div class="payment-header">
+                        <h2 class="payment-title">Método de Pago</h2>
+                        <p class="payment-subtitle">Elige cómo deseas pagar</p>
+                    </div>
+
+                    <div class="payment-steps">
+                        <div class="step completed">
+                            <div class="step-number">✓</div>
+                            <span>Dirección</span>
+                        </div>
+                        <div class="step active">
+                            <div class="step-number">2</div>
+                            <span>Pago</span>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <span>Revisar</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-body">
+                        <div class="payment-methods">
+                            <h3 class="section-title">Selecciona un Método</h3>
+                            
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Apple Pay</div>
+                                    <div class="payment-option-desc">Pago rápido con Face ID o Touch ID</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon" style="width:70px;background:#000;color:#fff">🍎 Pay</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option selected">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Tarjeta de Crédito</div>
+                                    <div class="payment-option-desc">Visa, Mastercard, American Express</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">VISA</div>
+                                    <div class="payment-icon">MC</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Google Pay</div>
+                                    <div class="payment-option-desc">Pago con tu cuenta de Google</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon" style="width:70px">G Pay</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Efectivo al Entregar</div>
+                                    <div class="payment-option-desc">Paga cuando recibas tu pedido</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">💵</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details">
+                            <div class="form-row">
+                                <label class="form-label">Número de Tarjeta</label>
+                                <input type="text" class="form-input" placeholder="•••• •••• •••• 4532">
+                            </div>
+
+                            <div class="form-row two-col">
+                                <div>
+                                    <label class="form-label">Vencimiento</label>
+                                    <input type="text" class="form-input" placeholder="12/25">
+                                </div>
+                                <div>
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-input" placeholder="•••">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-summary-mini">
+                            <div class="summary-item">
+                                <span class="summary-label">Subtotal</span>
+                                <span class="summary-value">$193.31</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total a Pagar</span>
+                                <span class="total-amount">$193.31</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-footer">
+                        <button class="pay-button">Confirmar Pago</button>
+                        <div class="security-info">
+                            <span>🔒</span>
+                            <span>Transacción segura SSL 256-bit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 3: Compact Mobile -->
+        <div class="prototype-container">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 3: Compacto Mobile</h2>
+                <p class="prototype-desc">Optimizado para pantallas pequeñas</p>
+            </div>
+            <div class="modal-preview compact">
+                <div class="payment-modal">
+                    <div class="payment-header">
+                        <h2 class="payment-title">💳 Pagar</h2>
+                        <p class="payment-subtitle">Total: $124.97</p>
+                    </div>
+
+                    <div class="payment-body">
+                        <div class="payment-methods">
+                            <h3 class="section-title">Método</h3>
+                            
+                            <div class="payment-option selected">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Tarjeta</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">💳</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">PayPal</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">PP</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Transferencia</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">🏦</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details">
+                            <div class="form-row">
+                                <label class="form-label">Tarjeta</label>
+                                <input type="text" class="form-input" placeholder="1234 5678 9012 3456">
+                            </div>
+
+                            <div class="form-row two-col">
+                                <div>
+                                    <label class="form-label">MM/AA</label>
+                                    <input type="text" class="form-input" placeholder="12/25">
+                                </div>
+                                <div>
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-input" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-footer">
+                        <button class="pay-button">Pagar $124.97</button>
+                        <div class="security-info">
+                            <span>🔒</span>
+                            <span>Pago seguro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 4: Minimal Clean -->
+        <div class="prototype-container">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 4: Minimalista</h2>
+                <p class="prototype-desc">Interfaz limpia enfocada en conversión</p>
+            </div>
+            <div class="modal-preview minimal">
+                <div class="payment-modal">
+                    <div class="payment-header">
+                        <h2 class="payment-title">Completar Registro</h2>
+                        <p class="payment-subtitle">Conferencia Anual 2025</p>
+                    </div>
+
+                    <div class="payment-body">
+                        <div style="background:#f0fdf4;border:2px solid #9ae6b4;padding:16px;border-radius:12px;margin-bottom:24px;text-align:center">
+                            <div style="color:#22543d;font-weight:600;margin-bottom:4px">🎉 Oferta Especial</div>
+                            <div style="color:#22543d;font-size:0.9rem">Libro de regalo incluido + Envío gratis</div>
+                        </div>
+
+                        <div class="order-summary-mini">
+                            <div class="summary-item">
+                                <span class="summary-label">Entrada Conferencia</span>
+                                <span class="summary-value">$299.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Libro Edición Especial</span>
+                                <span class="summary-value" style="color:#48bb78">Gratis</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Envío</span>
+                                <span class="summary-value" style="color:#48bb78">Gratis</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span class="total-amount">$299.00</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-methods">
+                            <h3 class="section-title">Método de Pago</h3>
+                            
+                            <div class="payment-option selected">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">Tarjeta de Crédito/Débito</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon">VISA</div>
+                                    <div class="payment-icon">MC</div>
+                                    <div class="payment-icon">AMEX</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option">
+                                <div class="payment-radio"></div>
+                                <div class="payment-option-content">
+                                    <div class="payment-option-title">PayPal</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <div class="payment-icon" style="width:60px">PayPal</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-details">
+                            <div class="form-row">
+                                <label class="form-label">Información de Pago</label>
+                                <input type="text" class="form-input" placeholder="Número de tarjeta">
+                            </div>
+
+                            <div class="form-row two-col">
+                                <div>
+                                    <input type="text" class="form-input" placeholder="MM/AA">
+                                </div>
+                                <div>
+                                    <input type="text" class="form-input" placeholder="CVV">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <input type="text" class="form-input" placeholder="Nombre completo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-footer">
+                        <button class="pay-button">Completar Registro - $299.00</button>
+                        <div class="security-info">
+                            <span>🔒</span>
+                            <span>Garantía de devolución de 30 días</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
