@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page Prototypes - Professional Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        .viewport-container {
+            padding: 20px;
+        }
+
+        .prototype-section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            font-size: 1.125rem;
+            color: #718096;
+        }
+
+        /* Cart Page Layout */
+        .cart-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .page-header {
+            padding: 32px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .items-count {
+            color: #718096;
+            font-size: 1rem;
+        }
+
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
+            padding: 32px;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Cart Item Card */
+        .cart-item-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+            transition: all 0.2s;
+        }
+
+        .cart-item-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.12);
+        }
+
+        .item-image-large {
+            width: 140px;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .item-title-large {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            line-height: 1.4;
+        }
+
+        .remove-icon-btn {
+            background: none;
+            border: none;
+            color: #cbd5e0;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s;
+        }
+
+        .remove-icon-btn:hover {
+            color: #e53e3e;
+        }
+
+        .item-meta-large {
+            color: #718096;
+            margin-bottom: 16px;
+        }
+
+        .item-meta-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #f7fafc;
+        }
+
+        .item-price-large {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .qty-btn-large {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .qty-btn-large:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .qty-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: #f7fafc;
+            border-radius: 16px;
+            padding: 28px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .summary-label {
+            color: #718096;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .promo-code {
+            margin: 24px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .promo-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+
+        .promo-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .promo-input-large {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .promo-input-large:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .apply-promo-btn {
+            padding: 14px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .apply-promo-btn:hover {
+            background: #5a67d8;
+        }
+
+        .total-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 3px solid #e2e8f0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .total-amount {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .continue-shopping {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .continue-shopping:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .secure-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            color: #718096;
+            font-size: 0.875rem;
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .badge-new {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-sale {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .badge-digital {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        /* Dark Theme */
+        .dark-theme {
+            background: #1a202c;
+        }
+
+        .dark-theme .cart-page {
+            background: #1a202c;
+        }
+
+        .dark-theme .page-header {
+            border-bottom-color: #2d3748;
+        }
+
+        .dark-theme .page-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .items-count {
+            color: #a0aec0;
+        }
+
+        .dark-theme .cart-item-card {
+            background: #2d3748;
+            border-color: #4a5568;
+        }
+
+        .dark-theme .item-title-large {
+            color: #f7fafc;
+        }
+
+        .dark-theme .item-meta-large,
+        .dark-theme .meta-label {
+            color: #a0aec0;
+        }
+
+        .dark-theme .item-footer {
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .qty-selector {
+            background: #1a202c;
+        }
+
+        .dark-theme .qty-btn-large {
+            background: #2d3748;
+            color: #cbd5e0;
+        }
+
+        .dark-theme .order-summary {
+            background: #2d3748;
+        }
+
+        .dark-theme .summary-title {
+            color: #f7fafc;
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-theme .summary-label {
+            color: #a0aec0;
+        }
+
+        .dark-theme .summary-value {
+            color: #f7fafc;
+        }
+
+        .dark-theme .promo-code {
+            background: #1a202c;
+        }
+
+        .dark-theme .promo-title {
+            color: #cbd5e0;
+        }
+
+        .dark-theme .promo-input-large {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #f7fafc;
+        }
+
+        .dark-theme .total-section {
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .continue-shopping {
+            background: #1a202c;
+            color: #cbd5e0;
+            border-color: #4a5568;
+        }
+
+        /* Compact Variant */
+        .compact-layout .cart-content {
+            grid-template-columns: 1fr;
+        }
+
+        .compact-layout .order-summary {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Minimal Variant */
+        .minimal-layout .cart-item-card {
+            border: none;
+            border-bottom: 2px solid #e2e8f0;
+            border-radius: 0;
+            padding: 32px 0;
+        }
+
+        .minimal-layout .cart-item-card:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cart-content {
+                padding: 20px;
+            }
+
+            .cart-item-card {
+                flex-direction: column;
+            }
+
+            .item-image-large {
+                width: 100%;
+                height: 200px;
+            }
+
+            .item-footer {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport-container">
+        <!-- Variant 1: Standard Layout -->
+        <div class="prototype-section">
+            <div class="section-header">
+                <h1 class="section-title">Variante 1: Diseño Estándar</h1>
+                <p class="section-desc">Layout clásico de dos columnas con resumen lateral</p>
+            </div>
+
+            <div class="cart-page">
+                <div class="page-header">
+                    <h1 class="page-title">Carrito de Compras</h1>
+                    <p class="items-count">3 artículos en tu carrito</p>
+                </div>
+
+                <div class="cart-content">
+                    <div class="cart-items">
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">📖</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">
+                                        Matrimonio que Perdura
+                                        <span class="badge badge-new">Nuevo</span>
+                                    </h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Autor:</span>
+                                        <span>James Dobson</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Idioma:</span>
+                                        <span>Español</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Formato:</span>
+                                        <span>Tapa Blanda • 320 páginas</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Estado:</span>
+                                        <span style="color:#48bb78">✓ En Stock</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$24.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">📚</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">
+                                        Crianza con Propósito
+                                        <span class="badge badge-digital">Digital</span>
+                                    </h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Autor:</span>
+                                        <span>Rick Warren</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Idioma:</span>
+                                        <span>English</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Formato:</span>
+                                        <span>eBook (PDF + EPUB)</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Disponibilidad:</span>
+                                        <span style="color:#48bb78">✓ Descarga Inmediata</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$15.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">2</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">🎓</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">
+                                        Conferencia: Liderazgo Cristiano 2025
+                                        <span class="badge badge-sale">-20%</span>
+                                    </h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Fecha:</span>
+                                        <span>15-17 Marzo 2025</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Modalidad:</span>
+                                        <span>Presencial + Online</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Ubicación:</span>
+                                        <span>Centro de Convenciones, Miami FL</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Incluye:</span>
+                                        <span>Materiales + Certificado + Libro</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$79.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h2 class="summary-title">Resumen del Pedido</h2>
+                        
+                        <div class="summary-item">
+                            <span class="summary-label">Subtotal (4 artículos)</span>
+                            <span class="summary-value">$136.96</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value">$5.99</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Impuestos estimados</span>
+                            <span class="summary-value">$11.44</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Descuento aplicado</span>
+                            <span class="summary-value" style="color:#48bb78">-$16.00</span>
+                        </div>
+
+                        <div class="promo-code">
+                            <div class="promo-title">¿Tienes un cupón?</div>
+                            <div class="promo-input-wrapper">
+                                <input type="text" class="promo-input-large" placeholder="Código de descuento">
+                                <button class="apply-promo-btn">Aplicar</button>
+                            </div>
+                        </div>
+
+                        <div class="total-section">
+                            <div class="total-row">
+                                <span>Total</span>
+                                <span class="total-amount">$138.39</span>
+                            </div>
+
+                            <button class="checkout-btn">Proceder al Pago</button>
+                            <button class="continue-shopping">Continuar Comprando</button>
+
+                            <div class="secure-checkout">
+                                <span>🔒</span>
+                                <span>Pago seguro y encriptado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 2: Dark Theme -->
+        <div class="prototype-section dark-theme">
+            <div class="section-header">
+                <h1 class="section-title" style="color:white">Variante 2: Tema Oscuro</h1>
+                <p class="section-desc" style="color:#cbd5e0">Diseño optimizado para modo nocturno</p>
+            </div>
+
+            <div class="cart-page">
+                <div class="page-header">
+                    <h1 class="page-title">Mi Carrito</h1>
+                    <p class="items-count">2 artículos seleccionados</p>
+                </div>
+
+                <div class="cart-content">
+                    <div class="cart-items">
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">📖</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">El Poder de la Oración</h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Autor:</span>
+                                        <span>John C. Maxwell</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Idioma:</span>
+                                        <span>Español</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Formato:</span>
+                                        <span>Tapa Dura • 256 páginas</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$29.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">🎯</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">
+                                        Curso Online: Finanzas Bíblicas
+                                        <span class="badge badge-digital">Online</span>
+                                    </h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Duración:</span>
+                                        <span>8 Semanas</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Acceso:</span>
+                                        <span>De por vida</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Incluye:</span>
+                                        <span>Videos + PDFs + Certificado</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$149.00</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h2 class="summary-title">Resumen</h2>
+                        
+                        <div class="summary-item">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$178.99</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Impuestos (8%)</span>
+                            <span class="summary-value">$14.32</span>
+                        </div>
+
+                        <div class="total-section">
+                            <div class="total-row">
+                                <span>Total</span>
+                                <span class="total-amount">$193.31</span>
+                            </div>
+
+                            <button class="checkout-btn">Finalizar Compra</button>
+                            <button class="continue-shopping">Seguir Comprando</button>
+
+                            <div class="secure-checkout">
+                                <span>🔒</span>
+                                <span>Compra 100% segura</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 3: Compact Mobile -->
+        <div class="prototype-section compact-layout">
+            <div class="section-header">
+                <h1 class="section-title">Variante 3: Diseño Compacto</h1>
+                <p class="section-desc">Optimizado para dispositivos móviles</p>
+            </div>
+
+            <div class="cart-page" style="max-width:800px;margin:0 auto">
+                <div class="page-header">
+                    <h1 class="page-title">🛒 Tu Carrito</h1>
+                    <p class="items-count">3 productos</p>
+                </div>
+
+                <div class="cart-content">
+                    <div class="cart-items">
+                        <div class="cart-item-card">
+                            <div class="item-image-large" style="width:120px;height:150px">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📖</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large" style="font-size:1.1rem">Biblia de Estudio RV1960</h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large" style="margin-bottom:12px">
+                                    <div class="item-meta-row" style="font-size:0.9rem">
+                                        <span>Reina Valera • Tapa Dura</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer" style="padding-top:12px">
+                                    <div class="item-price-large" style="font-size:1.5rem">$45.00</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large" style="width:36px;height:36px">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large" style="width:36px;height:36px">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-card">
+                            <div class="item-image-large" style="width:120px;height:150px">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📚</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large" style="font-size:1.1rem">Pack Familia Feliz</h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large" style="margin-bottom:12px">
+                                    <div class="item-meta-row" style="font-size:0.9rem">
+                                        <span>3 libros + guía práctica</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer" style="padding-top:12px">
+                                    <div class="item-price-large" style="font-size:1.5rem">$59.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large" style="width:36px;height:36px">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large" style="width:36px;height:36px">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-card">
+                            <div class="item-image-large" style="width:120px;height:150px">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">💿</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large" style="font-size:1.1rem">Alabanzas Vol.3 (Digital)</h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large" style="margin-bottom:12px">
+                                    <div class="item-meta-row" style="font-size:0.9rem">
+                                        <span>MP3 • Descarga inmediata</span>
+                                    </div>
+                                </div>
+                                <div class="item-footer" style="padding-top:12px">
+                                    <div class="item-price-large" style="font-size:1.5rem">$9.99</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large" style="width:36px;height:36px">−</button>
+                                        <span class="qty-display">2</span>
+                                        <button class="qty-btn-large" style="width:36px;height:36px">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h2 class="summary-title">Total a Pagar</h2>
+                        
+                        <div class="summary-item">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$124.97</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value" style="color:#48bb78">Gratis</span>
+                        </div>
+
+                        <div class="total-section">
+                            <div class="total-row">
+                                <span>Total</span>
+                                <span class="total-amount">$124.97</span>
+                            </div>
+
+                            <button class="checkout-btn">Pagar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 4: Minimal Layout -->
+        <div class="prototype-section minimal-layout">
+            <div class="section-header">
+                <h1 class="section-title">Variante 4: Diseño Minimalista</h1>
+                <p class="section-desc">Interfaz limpia enfocada en contenido</p>
+            </div>
+
+            <div class="cart-page">
+                <div class="page-header">
+                    <h1 class="page-title">Carrito</h1>
+                    <p class="items-count">1 artículo</p>
+                </div>
+
+                <div class="cart-content">
+                    <div class="cart-items">
+                        <div class="cart-item-card">
+                            <div class="item-image-large">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:3rem;">🎓</div>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-header">
+                                    <h3 class="item-title-large">
+                                        Conferencia Anual 2025
+                                        <span class="badge badge-new">Nuevo</span>
+                                    </h3>
+                                    <button class="remove-icon-btn">×</button>
+                                </div>
+                                <div class="item-meta-large">
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Fecha:</span>
+                                        <span>15-17 Marzo 2025</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Modalidad:</span>
+                                        <span>Presencial + Streaming Online</span>
+                                    </div>
+                                    <div class="item-meta-row">
+                                        <span class="meta-label">Incluye:</span>
+                                        <span>Libro oficial edición especial (regalo)</span>
+                                    </div>
+                                </div>
+                                <div style="background:#f0fdf4;border:2px solid#9ae6b4;padding:12px;border-radius:10px;margin:16px 0;color:#22543d;font-size:0.9rem;font-weight:600">
+                                    🎉 ¡Envío gratis incluido!
+                                </div>
+                                <div class="item-footer">
+                                    <div class="item-price-large">$299.00</div>
+                                    <div class="qty-selector">
+                                        <button class="qty-btn-large">−</button>
+                                        <span class="qty-display">1</span>
+                                        <button class="qty-btn-large">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h2 class="summary-title">Resumen</h2>
+                        
+                        <div class="summary-item">
+                            <span class="summary-label">Entrada Conferencia</span>
+                            <span class="summary-value">$299.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Libro de regalo</span>
+                            <span class="summary-value" style="color:#48bb78">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value" style="color:#48bb78">Gratis</span>
+                        </div>
+
+                        <div class="total-section">
+                            <div class="total-row">
+                                <span>Total</span>
+                                <span class="total-amount">$299.00</span>
+                            </div>
+
+                            <button class="checkout-btn">Completar Registro</button>
+                            <button class="continue-shopping">Explorar Más Eventos</button>
+
+                            <div class="secure-checkout">
+                                <span>🔒</span>
+                                <span>Garantía de 30 días</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

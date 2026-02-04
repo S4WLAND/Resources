@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Modal Prototypes - Professional Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .main-header h1 {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .main-header p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+        }
+
+        .prototypes-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+        }
+
+        .prototype-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .prototype-wrapper:hover {
+            transform: translateY(-8px);
+        }
+
+        .prototype-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .prototype-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .prototype-desc {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .modal-preview {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+        }
+
+        /* Cart Modal Base */
+        .cart-modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .cart-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #f7fafc;
+            color: #4a5568;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: #edf2f7;
+            color: #1a202c;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 24px 28px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f7fafc;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+
+        /* Cart Items */
+        .cart-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f7fafc;
+            transition: all 0.2s;
+        }
+
+        .cart-item:hover {
+            background: #fafbfc;
+            margin: 0 -12px;
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 12px;
+        }
+
+        .item-image {
+            width: 90px;
+            height: 110px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1a202c;
+            margin-bottom: 6px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .item-meta {
+            color: #718096;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .item-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .qty-value {
+            min-width: 24px;
+            text-align: center;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            font-size: 0.875rem;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .remove-btn:hover {
+            background: #fff5f5;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-new {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-sale {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .badge-digital {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: 24px 28px;
+            background: #f7fafc;
+        }
+
+        .promo-section {
+            background: white;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .promo-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .promo-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .promo-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .apply-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .apply-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .summary-label {
+            color: #718096;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            font-size: 1.375rem;
+            font-weight: 700;
+        }
+
+        .total-amount {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 14px 24px;
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.4;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: #718096;
+            margin-bottom: 24px;
+        }
+
+        /* Dark Theme */
+        .dark-theme .cart-modal {
+            background: #1a202c;
+        }
+
+        .dark-theme .modal-header {
+            border-bottom-color: #2d3748;
+        }
+
+        .dark-theme .modal-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .close-btn {
+            background: #2d3748;
+            color: #cbd5e0;
+        }
+
+        .dark-theme .close-btn:hover {
+            background: #4a5568;
+            color: white;
+        }
+
+        .dark-theme .cart-item {
+            border-bottom-color: #2d3748;
+        }
+
+        .dark-theme .cart-item:hover {
+            background: #2d3748;
+        }
+
+        .dark-theme .item-title {
+            color: #f7fafc;
+        }
+
+        .dark-theme .item-meta {
+            color: #a0aec0;
+        }
+
+        .dark-theme .qty-controls {
+            background: #2d3748;
+        }
+
+        .dark-theme .qty-btn {
+            background: #1a202c;
+            color: #cbd5e0;
+        }
+
+        .dark-theme .modal-footer {
+            background: #2d3748;
+        }
+
+        .dark-theme .promo-section {
+            background: #1a202c;
+            border-color: #4a5568;
+        }
+
+        .dark-theme .promo-input {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #f7fafc;
+        }
+
+        .dark-theme .summary-label {
+            color: #a0aec0;
+        }
+
+        .dark-theme .summary-value {
+            color: #f7fafc;
+        }
+
+        .dark-theme .total-row {
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .btn-secondary {
+            background: #1a202c;
+            color: #cbd5e0;
+            border-color: #4a5568;
+        }
+
+        /* Compact Variant */
+        .compact .cart-modal {
+            max-width: 380px;
+        }
+
+        .compact .item-image {
+            width: 70px;
+            height: 85px;
+        }
+
+        .compact .item-title {
+            font-size: 0.9rem;
+        }
+
+        .compact .item-price {
+            font-size: 1.1rem;
+        }
+
+        /* Minimal Variant */
+        .minimal .cart-modal {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .minimal .modal-header {
+            padding: 20px 24px;
+        }
+
+        .minimal .cart-item {
+            padding: 16px 0;
+        }
+
+        .minimal .modal-footer {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Premium Variant */
+        .premium .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+        }
+
+        .premium .modal-title {
+            color: white;
+        }
+
+        .premium .cart-badge {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .premium .close-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .premium .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 1400px) {
+            .prototypes-container {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .main-header h1 {
+                font-size: 2rem;
+            }
+
+            .prototypes-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .modal-preview {
+                padding: 20px 10px;
+                min-height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-header">
+        <h1>🛒 Cart Modal Prototypes</h1>
+        <p>Professional, responsive designs for e-commerce platforms</p>
+    </div>
+
+    <div class="prototypes-container">
+        <!-- Variant 1: Standard Modern -->
+        <div class="prototype-wrapper">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 1: Modern Standard</h2>
+                <p class="prototype-desc">Diseño limpio y profesional con todas las funcionalidades esenciales</p>
+            </div>
+            <div class="modal-preview">
+                <div class="cart-modal">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Tu Carrito
+                            <span class="cart-badge">3</span>
+                        </div>
+                        <button class="close-btn">×</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📖</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Matrimonio que Perdura
+                                    <span class="badge badge-new">Nuevo</span>
+                                </div>
+                                <div class="item-meta">Autor: James Dobson • Español • Físico</div>
+                                <div class="item-price">$24.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📚</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Crianza con Propósito
+                                    <span class="badge badge-digital">Digital</span>
+                                </div>
+                                <div class="item-meta">Autor: Rick Warren • English • eBook</div>
+                                <div class="item-price">$15.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">2</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">🎓</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Conferencia Liderazgo 2025
+                                    <span class="badge badge-sale">-20%</span>
+                                </div>
+                                <div class="item-meta">15-17 Mar • Online + Presencial</div>
+                                <div class="item-price">$79.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="promo-section">
+                            <div class="promo-input-group">
+                                <input type="text" class="promo-input" placeholder="Código de descuento">
+                                <button class="apply-btn">Aplicar</button>
+                            </div>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$152.96</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value">$5.99</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Descuento</span>
+                            <span class="summary-value" style="color:#48bb78">-$15.30</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-amount">$143.65</span>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">Proceder al Pago</button>
+                            <button class="btn-secondary">Continuar Comprando</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 2: Dark Theme -->
+        <div class="prototype-wrapper">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 2: Dark Theme</h2>
+                <p class="prototype-desc">Diseño moderno con tema oscuro para mejor experiencia visual</p>
+            </div>
+            <div class="modal-preview dark-theme">
+                <div class="cart-modal">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Mi Carrito
+                            <span class="cart-badge">2</span>
+                        </div>
+                        <button class="close-btn">×</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📖</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">El Poder de la Oración</div>
+                                <div class="item-meta">John C. Maxwell • Español • Tapa Dura</div>
+                                <div class="item-price">$29.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">🎯</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Curso: Finanzas Bíblicas
+                                    <span class="badge badge-digital">Online</span>
+                                </div>
+                                <div class="item-meta">8 Semanas • Acceso de por vida</div>
+                                <div class="item-price">$149.00</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$178.99</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Impuestos (8%)</span>
+                            <span class="summary-value">$14.32</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-amount">$193.31</span>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">Finalizar Compra</button>
+                            <button class="btn-secondary">Ver Carrito Completo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 3: Compact Mobile -->
+        <div class="prototype-wrapper">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 3: Compact Mobile</h2>
+                <p class="prototype-desc">Optimizado para pantallas pequeñas con diseño compacto</p>
+            </div>
+            <div class="modal-preview compact">
+                <div class="cart-modal">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            🛒 Carrito (4)
+                        </div>
+                        <button class="close-btn">×</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;">📖</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">Biblia de Estudio RV1960</div>
+                                <div class="item-meta">Reina Valera</div>
+                                <div class="item-price">$45.00</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;">📚</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">Pack Familia Feliz</div>
+                                <div class="item-meta">3 libros + guía</div>
+                                <div class="item-price">$59.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;">💿</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">Alabanzas Vol.3</div>
+                                <div class="item-meta">Digital MP3</div>
+                                <div class="item-price">$9.99</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">2</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-amount">$124.97</span>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">Pagar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Variant 4: Premium Design -->
+        <div class="prototype-wrapper">
+            <div class="prototype-header">
+                <h2 class="prototype-title">Variante 4: Premium Gradient</h2>
+                <p class="prototype-desc">Diseño premium con degradados y efectos visuales elegantes</p>
+            </div>
+            <div class="modal-preview premium">
+                <div class="cart-modal">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Mi Carrito
+                            <span class="cart-badge">2</span>
+                        </div>
+                        <button class="close-btn">×</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">🎓</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Conferencia Anual 2025
+                                    <span class="badge badge-new">Nuevo</span>
+                                </div>
+                                <div class="item-meta">15-17 Marzo • Presencial + Online</div>
+                                <div class="item-price">$299.00</div>
+                                <div class="item-actions">
+                                    <div class="qty-controls">
+                                        <button class="qty-btn">−</button>
+                                        <span class="qty-value">1</span>
+                                        <button class="qty-btn">+</button>
+                                    </div>
+                                    <button class="remove-btn">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;">📖</div>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">
+                                    Libro Oficial Conferencia
+                                    <span class="badge badge-sale">Gratis</span>
+                                </div>
+                                <div class="item-meta">Edición Especial • Incluido</div>
+                                <div style="margin-top:8px;color:#48bb78;font-size:0.875rem;font-weight:600">
+                                    ✓ Regalo incluido con tu entrada
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div style="background:#f0fdf4;border:2px solid #9ae6b4;padding:14px;border-radius:12px;margin-bottom:20px">
+                            <div style="color:#22543d;font-size:0.9rem;font-weight:600;text-align:center">
+                                🎉 ¡Envío gratis en tu pedido!
+                            </div>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">$299.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Libro de regalo</span>
+                            <span class="summary-value" style="color:#48bb78">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value" style="color:#48bb78">Gratis</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-amount">$299.00</span>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">Completar Registro</button>
+                            <button class="btn-secondary">Seguir Explorando</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
