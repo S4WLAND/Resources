@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formato Lanzamientos - Textknow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            margin-bottom: 32px;
+        }
+        
+        .section-header h2 {
+            font-size: 28px;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+        
+        .section-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        /* Feature Spotlight - Lanzamiento */
+        .launch-banner {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e3f2fd;
+            margin-bottom: 32px;
+            display: flex;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .launch-banner:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .launch-visual {
+            flex: 0 0 40%;
+            background: linear-gradient(135deg, #5b8bb5 0%, #7ba5ce 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .launch-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .launch-visual img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .launch-banner:hover .launch-visual img {
+            transform: scale(1.05);
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #f57c00;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3);
+            z-index: 2;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .launch-content {
+            flex: 1;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .launch-category {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            align-self: flex-start;
+        }
+        
+        .launch-banner h3 {
+            font-size: 32px;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .launch-description {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        
+        .launch-benefits {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+        
+        .launch-benefits li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #444;
+        }
+        
+        .launch-benefits li::before {
+            content: '✓';
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .launch-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .launch-cta-primary {
+            background: #4a7ba7;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(74, 123, 167, 0.2);
+        }
+        
+        .launch-cta-primary:hover {
+            background: #3d6789;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 123, 167, 0.3);
+        }
+        
+        .launch-cta-primary:focus {
+            outline: 3px solid #4a7ba7;
+            outline-offset: 2px;
+        }
+        
+        .launch-cta-secondary {
+            background: transparent;
+            color: #4a7ba7;
+            border: 2px solid #4a7ba7;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .launch-cta-secondary:hover {
+            background: #4a7ba7;
+            color: white;
+        }
+        
+        .launch-cta-secondary:focus {
+            outline: 3px solid #4a7ba7;
+            outline-offset: 2px;
+        }
+        
+        /* Estado de teaser (próximo lanzamiento) */
+        .launch-teaser {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            border: 2px dashed #ccc;
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .launch-teaser h3 {
+            color: #666;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .launch-teaser p {
+            color: #999;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .launch-teaser .date {
+            color: #4a7ba7;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .launch-banner {
+                flex-direction: column;
+            }
+            
+            .launch-visual {
+                flex: 0 0 auto;
+                min-height: 300px;
+            }
+            
+            .launch-content {
+                padding: 32px 24px;
+            }
+            
+            .launch-banner h3 {
+                font-size: 26px;
+            }
+            
+            .launch-description {
+                font-size: 16px;
+            }
+            
+            .launch-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .launch-cta-primary,
+            .launch-cta-secondary {
+                text-align: center;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .launch-visual {
+                padding: 24px;
+                min-height: 250px;
+            }
+            
+            .launch-content {
+                padding: 24px 20px;
+            }
+            
+            .launch-banner h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="section-header">
+            <h2>Últimos Lanzamientos</h2>
+            <p>Descubre lo nuevo en Textknow</p>
+        </div>
+        
+        <!-- Lanzamiento activo -->
+        <div class="launch-banner">
+            <div class="launch-visual">
+                <span class="new-badge">🆕 Nuevo</span>
+                <!-- Placeholder de imagen - reemplazar con imagen real -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'%3E%3Crect fill='%23ffffff' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='%234a7ba7'%3EPortada del Libro%3C/text%3E%3C/svg%3E" alt="Nuevo libro lanzamiento">
+            </div>
+            <div class="launch-content">
+                <span class="launch-category">Nuevo Libro</span>
+                <h3>Fe en Tiempos de Cambio</h3>
+                <p class="launch-description">
+                    Una guía práctica para mantener la esperanza y crecer espiritualmente en medio de los desafíos modernos.
+                </p>
+                <ul class="launch-benefits">
+                    <li>Escrito por reconocido autor cristiano</li>
+                    <li>Incluye guía de estudio grupal</li>
+                    <li>Disponible en formato físico y digital</li>
+                    <li>Precio de lanzamiento especial</li>
+                </ul>
+                <div class="launch-actions">
+                    <a href="#" class="launch-cta-primary">Obtener ahora</a>
+                    <a href="#" class="launch-cta-secondary">Ver vista previa</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Segundo ejemplo: Convenio con autor -->
+        <div class="launch-banner">
+            <div class="launch-visual">
+                <span class="new-badge">Convenio</span>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'%3E%3Crect fill='%23ffffff' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='%234a7ba7'%3EColección Autor%3C/text%3E%3C/svg%3E" alt="Convenio con autor">
+            </div>
+            <div class="launch-content">
+                <span class="launch-category">Convenio Editorial</span>
+                <h3>Colección Completa de Juan Martínez</h3>
+                <p class="launch-description">
+                    Accede a toda la obra del reconocido teólogo y escritor, ahora disponible en Textknow.
+                </p>
+                <ul class="launch-benefits">
+                    <li>15 títulos disponibles desde hoy</li>
+                    <li>Descuentos exclusivos para suscriptores</li>
+                    <li>Contenido adicional: entrevistas y videos</li>
+                    <li>Actualizaciones automáticas de nuevas obras</li>
+                </ul>
+                <div class="launch-actions">
+                    <a href="#" class="launch-cta-primary">Explorar colección</a>
+                    <a href="#" class="launch-cta-secondary">Conocer al autor</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estado teaser (opcional) -->
+        <!--
+        <div class="launch-teaser">
+            <h3>🚀 Próximo Lanzamiento</h3>
+            <p>Estamos preparando algo especial para ti</p>
+            <p class="date">Disponible el 1 de Abril de 2026</p>
+        </div>
+        -->
+    </div>
+</body>
+</html>
+```
+
+---
+
+## 3. COMUNICADOS / IMPACTO - "Impact Notice"
+
+### Descripción Visual
+Formato de **tarjeta compacta con ícono destacado** que prioriza legibilidad y llamado a la acción. Diseñado para comunicados institucionales, anuncios de impacto comunitario, o actualizaciones importantes. Utiliza iconografía consistente para identificar el tipo de comunicado (megáfono para anuncios, corazón para impacto social, información para avisos generales). El diseño es limpio, con bordes definidos y colores institucionales que transmiten confianza.
+
+### Estructura de Bloques UI
+```
+┌─────────────────────────────────────┐
+│  [Ícono]  Categoría del comunicado  │
+│           Título del Anuncio        │
+│           Descripción breve         │
+│           📅 Fecha de publicación   │
+│           [CTA] [Compartir]         │
+└─────────────────────────────────────┘

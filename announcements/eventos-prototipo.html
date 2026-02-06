@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos - Textknow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Paleta de colores */
+            --color-primary: #4a7ba7;
+            --color-primary-dark: #3d6789;
+            --color-primary-light: #6b95bb;
+            --color-evento: #5b8bb5;
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #666666;
+            --color-background: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-border: #e0e0e0;
+            --color-success: #4caf50;
+            --color-warning: #ff9800;
+            --color-error: #f44336;
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            
+            /* Border radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: var(--color-background);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        /* =========================
+           PREVIEW CARDS SECTION
+        ========================= */
+        
+        .section-header {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+        }
+        
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        /* Event Card - Preview */
+        .event-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .event-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--color-evento);
+        }
+        
+        .event-card:focus-within {
+            outline: 3px solid var(--color-evento);
+            outline-offset: 2px;
+        }
+        
+        /* Media Hero */
+        .event-media {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .event-media img,
+        .event-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .event-card:hover .event-media img,
+        .event-card:hover .event-media video {
+            transform: scale(1.05);
+        }
+        
+        /* Media Overlay Gradient */
+        .event-media::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            pointer-events: none;
+        }
+        
+        /* Play Button Overlay */
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .play-button svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--color-evento);
+            margin-left: 4px;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 3;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-badge.proximo {
+            background: rgba(91, 139, 181, 0.9);
+            color: white;
+        }
+        
+        .status-badge.en-vivo {
+            background: rgba(244, 67, 54, 0.9);
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .status-badge.finalizado {
+            background: rgba(158, 158, 158, 0.9);
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Event Content */
+        .event-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .event-date-time {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-evento);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .event-date-time svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .event-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .event-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        
+        .event-meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--color-evento);
+            flex-shrink: 0;
+        }
+        
+        .event-cta {
+            width: 100%;
+            background: var(--color-evento);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .event-cta:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .event-cta svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+        
+        .event-cta:hover svg {
+            transform: translateX(4px);
+        }
+        
+        /* Lleno/Sin plazas */
+        .event-card.sold-out .event-media::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        .sold-out-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-error);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 16px;
+            z-index: 2;
+        }
+        
+        /* =========================
+           DETAIL PAGE SECTION
+        ========================= */
+        
+        .page-separator {
+            margin: var(--spacing-2xl) 0;
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--color-border), transparent);
+        }
+        
+        .detail-page {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            color: white;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 14px;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.9;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .hero-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+        }
+        
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+            font-size: 16px;
+        }
+        
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .hero-meta-item svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Quick Actions Bar */
+        .quick-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            border: none;
+        }
+        
+        .quick-action-btn.primary {
+            background: var(--color-evento);
+            color: white;
+        }
+        
+        .quick-action-btn.primary:hover {
+            background: var(--color-primary-dark);
+        }
+        
+        .quick-action-btn.secondary {
+            background: transparent;
+            color: var(--color-evento);
+            border: 2px solid var(--color-evento);
+        }
+        
+        .quick-action-btn.secondary:hover {
+            background: var(--color-evento);
+            color: white;
+        }
+        
+        /* Main Content Area */
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl);
+        }
+        
+        .main-content {
+            min-width: 0; /* Fix para overflow */
+        }
+        
+        .main-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .main-content h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .main-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .main-content ul {
+            list-style: none;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .main-content ul li {
+            padding-left: 28px;
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+            font-size: 16px;
+            color: var(--color-text-secondary);
+        }
+        
+        .main-content ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        /* Agenda */
+        .agenda {
+            background: var(--color-background);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .agenda-item {
+            padding: var(--spacing-md);
+            border-left: 3px solid var(--color-evento);
+            margin-bottom: var(--spacing-md);
+            background: white;
+            border-radius: var(--radius-sm);
+        }
+        
+        .agenda-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .agenda-time {
+            font-weight: 700;
+            color: var(--color-evento);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .agenda-activity {
+            font-size: 15px;
+            color: var(--color-text-primary);
+        }
+        
+        /* Speakers */
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .speaker-card {
+            text-align: center;
+        }
+        
+        .speaker-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto var(--spacing-md);
+            border: 4px solid var(--color-evento);
+        }
+        
+        .speaker-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .speaker-role {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: var(--spacing-lg);
+            height: fit-content;
+        }
+        
+        .info-box {
+            background: var(--color-background);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .info-box h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+        
+        /* Organizador */
+        .organizer-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .organizer-photo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .organizer-info h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .organizer-contact {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+        
+        .organizer-contact a {
+            color: var(--color-evento);
+            text-decoration: none;
+        }
+        
+        .organizer-contact a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sticky CTA */
+        .sticky-cta {
+            background: var(--color-evento);
+            color: white;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: var(--spacing-lg);
+        }
+        
+        .sticky-cta:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Related Events */
+        .related-section {
+            padding: var(--spacing-xl);
+            background: var(--color-background);
+        }
+        
+        .related-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-section {
+                height: 300px;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+            }
+            
+            .quick-action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .speakers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===================================
+             PREVIEW CARDS SECTION
+        ==================================== -->
+        <section class="section-header">
+            <h1>Próximos Eventos</h1>
+            <p>Únete a nuestras actividades y crece en comunidad</p>
+        </section>
+        
+        <div class="events-grid">
+            <!-- Event Card 1: Con Video -->
+            <article class="event-card" onclick="scrollToDetail()">
+                <div class="event-media">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad1)' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='white'%3EConferencia de Líderes%3C/text%3E%3C/svg%3E" alt="Conferencia de Líderes">
+                    <div class="play-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge proximo">Próximo</span>
+                </div>
+                <div class="event-content">
+                    <div class="event-date-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                        </svg>
+                        <span>15 Marzo 2026 • 19:00 hs</span>
+                    </div>
+                    <h3>Encuentro de Líderes Cristianos: Construyendo Comunidad</h3>
+                    <div class="event-meta">
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Centro Comunitario, Corrientes</span>
+                        </div>
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                            <span>45 de 50 plazas disponibles</span>
+                        </div>
+                    </div>
+                    <button class="event-cta">
+                        Ver detalles
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+            
+            <!-- Event Card 2: Con Imagen -->
+            <article class="event-card">
+                <div class="event-media">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%234a7ba7;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%236b95bb;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad2)' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='white'%3ETaller Bíblico Online%3C/text%3E%3C/svg%3E" alt="Taller Bíblico">
+                    <span class="status-badge proximo">Próximo</span>
+                </div>
+                <div class="event-content">
+                    <div class="event-date-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                        </svg>
+                        <span>22 Marzo 2026 • 20:00 hs</span>
+                    </div>
+                    <h3>Taller de Estudios Bíblicos para Principiantes</h3>
+                    <div class="event-meta">
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                            </svg>
+                            <span>Modalidad virtual (Zoom)</span>
+                        </div>
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                            <span>Plazas ilimitadas</span>
+                        </div>
+                    </div>
+                    <button class="event-cta">
+                        Ver detalles
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+            
+            <!-- Event Card 3: Sold Out -->
+            <article class="event-card sold-out">
+                <div class="event-media">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f57c00;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ff9800;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad3)' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='white'%3ELibrería Rodante%3C/text%3E%3C/svg%3E" alt="Librería Rodante">
+                    <span class="sold-out-badge">COMPLETO</span>
+                    <span class="status-badge finalizado">Finalizado</span>
+                </div>
+                <div class="event-content">
+                    <div class="event-date-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                        </svg>
+                        <span>01 Febrero 2026 • 10:00 hs</span>
+                    </div>
+                    <h3>Librería Rodante en la Plaza Central</h3>
+                    <div class="event-meta">
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Plaza Central, Corrientes</span>
+                        </div>
+                        <div class="event-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                            <span>0 de 30 plazas disponibles</span>
+                        </div>
+                    </div>
+                    <button class="event-cta" style="background: #9e9e9e; cursor: not-allowed;">
+                        Ver resumen
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+        </div>
+        
+        <hr class="page-separator">
+        
+        <!-- ===================================
+             DETAIL PAGE SECTION
+        ==================================== -->
+        <section class="detail-page" id="detail-page">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <img class="hero-media" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='400' viewBox='0 0 1200 400'%3E%3Cdefs%3E%3ClinearGradient id='herograd' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23herograd)' width='1200' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='32' fill='white' font-weight='bold'%3EImagen Hero del Evento%3C/text%3E%3C/svg%3E" alt="Hero Image">
+                <div class="hero-overlay">
+                    <div class="breadcrumb">
+                        <a href="#">Inicio</a>
+                        <span>›</span>
+                        <a href="#">Eventos</a>
+                        <span>›</span>
+                        <span>Encuentro de Líderes</span>
+                    </div>
+                    <h1 class="hero-title">Encuentro de Líderes Cristianos: Construyendo Comunidad</h1>
+                    <div class="hero-meta">
+                        <div class="hero-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                            </svg>
+                            <span>15 de Marzo, 2026</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            </svg>
+                            <span>19:00 - 21:00 hs</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Centro Comunitario, Corrientes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action-btn primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                    </svg>
+                    Confirmar asistencia
+                </button>
+                <button class="quick-action-btn secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                    </svg>
+                    Añadir a calendario
+                </button>
+                <button class="quick-action-btn secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                    </svg>
+                    Compartir evento
+                </button>
+            </div>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <h2>¿De qué se trata este encuentro?</h2>
+                    <p>
+                        El Encuentro de Líderes Cristianos es una jornada especialmente diseñada para todos aquellos que tienen el llamado de servir y guiar dentro de sus comunidades. Durante este evento, exploraremos juntos los fundamentos bíblicos del liderazgo cristiano, compartiremos experiencias y aprenderemos de expertos en ministerio.
+                    </p>
+                    <p>
+                        Esta es una oportunidad única para fortalecer tu visión de liderazgo, conectar con otros siervos de Dios y renovar tu pasión por el servicio. A través de enseñanzas profundas, dinámicas interactivas y momentos de oración, buscaremos equiparte con herramientas prácticas que puedas implementar inmediatamente en tu ministerio.
+                    </p>
+                    
+                    <h3>¿Qué aprenderás en este evento?</h3>
+                    <ul>
+                        <li>Fundamentos bíblicos del liderazgo sirviente</li>
+                        <li>Cómo desarrollar y formar nuevos líderes en tu comunidad</li>
+                        <li>Estrategias para resolver conflictos con sabiduría y gracia</li>
+                        <li>La importancia del cuidado personal y espiritual del líder</li>
+                        <li>Herramientas prácticas para la planificación ministerial</li>
+                    </ul>
+                    
+                    <h3>Programa del Encuentro</h3>
+                    <div class="agenda">
+                        <div class="agenda-item">
+                            <div class="agenda-time">19:00 - 19:30</div>
+                            <div class="agenda-activity">Registro y bienvenida • Momento de comunión</div>
+                        </div>
+                        <div class="agenda-item">
+                            <div class="agenda-time">19:30 - 20:15</div>
+                            <div class="agenda-activity">Conferencia principal: "El Corazón del Líder Cristiano"</div>
+                        </div>
+                        <div class="agenda-item">
+                            <div class="agenda-time">20:15 - 20:30</div>
+                            <div class="agenda-activity">Break • Refrigerio y networking</div>
+                        </div>
+                        <div class="agenda-item">
+                            <div class="agenda-time">20:30 - 21:00</div>
+                            <div class="agenda-activity">Panel de experiencias • Preguntas y respuestas</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Nuestros Facilitadores</h3>
+                    <div class="speakers-grid">
+                        <div class="speaker-card">
+                            <img class="speaker-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle fill='%235b8bb5' cx='60' cy='60' r='60'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='48' fill='white' font-weight='bold'%3EJM%3C/text%3E%3C/svg%3E" alt="Juan Martínez">
+                            <div class="speaker-name">Juan Martínez</div>
+                            <div class="speaker-role">Pastor Principal</div>
+                        </div>
+                        <div class="speaker-card">
+                            <img class="speaker-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle fill='%234a7ba7' cx='60' cy='60' r='60'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='48' fill='white' font-weight='bold'%3EMR%3C/text%3E%3C/svg%3E" alt="María Rodríguez">
+                            <div class="speaker-name">María Rodríguez</div>
+                            <div class="speaker-role">Líder de Ministerio</div>
+                        </div>
+                        <div class="speaker-card">
+                            <img class="speaker-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle fill='%236b95bb' cx='60' cy='60' r='60'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='48' fill='white' font-weight='bold'%3ECS%3C/text%3E%3C/svg%3E" alt="Carlos Silva">
+                            <div class="speaker-name">Carlos Silva</div>
+                            <div class="speaker-role">Formador de Líderes</div>
+                        </div>
+                    </div>
+                    
+                    <h3>¿Qué necesitas para participar?</h3>
+                    <ul>
+                        <li>Corazón dispuesto a aprender y servir</li>
+                        <li>Cuaderno y bolígrafo para tomar notas</li>
+                        <li>Llegar 15 minutos antes para el registro</li>
+                    </ul>
+                </div>
+                
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="info-box">
+                        <h4>📊 Detalles Rápidos</h4>
+                        <div class="info-item">
+                            <span class="info-label">Modalidad</span>
+                            <span class="info-value">Presencial</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Duración</span>
+                            <span class="info-value">2 horas</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Costo</span>
+                            <span class="info-value">Gratuito</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Plazas</span>
+                            <span class="info-value" style="color: var(--color-success); font-weight: 700;">45 de 50 disponibles</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Certificado</span>
+                            <span class="info-value">Sí</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h4>👤 Organizador</h4>
+                        <div class="organizer-card">
+                            <img class="organizer-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle fill='%234a7ba7' cx='28' cy='28' r='28'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='20' fill='white' font-weight='bold'%3ETK%3C/text%3E%3C/svg%3E" alt="Textknow">
+                            <div class="organizer-info">
+                                <h5>Equipo Textknow</h5>
+                                <div class="organizer-contact">
+                                    <a href="mailto:eventos@textknow.com">eventos@textknow.com</a><br>
+                                    <a href="tel:+543794123456">+54 379 412-3456</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="sticky-cta">Confirmar mi asistencia</button>
+                </aside>
+            </div>
+            
+            <!-- Related Events -->
+            <div class="related-section">
+                <h3>Eventos Relacionados</h3>
+                <div class="events-grid">
+                    <article class="event-card">
+                        <div class="event-media">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%234a7ba7' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='white'%3EEvento Similar 1%3C/text%3E%3C/svg%3E" alt="Evento Relacionado">
+                            <span class="status-badge proximo">Próximo</span>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-date-time">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                                </svg>
+                                <span>29 Marzo 2026 • 18:00 hs</span>
+                            </div>
+                            <h3>Taller de Oración y Ayuno</h3>
+                            <div class="event-meta">
+                                <div class="event-meta-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                    </svg>
+                                    <span>Iglesia Central</span>
+                                </div>
+                            </div>
+                            <button class="event-cta">
+                                Ver detalles
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        function scrollToDetail() {
+            document.getElementById('detail-page').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

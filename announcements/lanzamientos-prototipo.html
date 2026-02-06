@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lanzamientos - Textknow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --color-primary: #4a7ba7;
+            --color-primary-dark: #3d6789;
+            --color-lanzamiento: #e67e22;
+            --color-lanzamiento-dark: #d35400;
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #666666;
+            --color-background: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-border: #e0e0e0;
+            --color-success: #4caf50;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--color-background);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        /* =========================
+           PREVIEW CARDS SECTION
+        ========================= */
+        
+        .section-header {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Launch Banner - Preview */
+        .launch-banner {
+            background: linear-gradient(135deg, #ffffff 0%, #fff5f0 100%);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            position: relative;
+            border: 2px solid #ffe5d4;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .launch-banner:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--color-lanzamiento);
+        }
+        
+        /* New Badge */
+        .new-badge {
+            position: absolute;
+            top: var(--spacing-lg);
+            left: var(--spacing-lg);
+            background: var(--color-lanzamiento);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            animation: pulse 2.5s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(230, 126, 34, 0.4);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Media Zone */
+        .launch-visual {
+            flex: 0 0 45%;
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .launch-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .launch-visual img {
+            max-width: 280px;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .launch-banner:hover .launch-visual img {
+            transform: scale(1.08) rotate(2deg);
+        }
+        
+        /* Content Zone */
+        .launch-content {
+            flex: 1;
+            padding: var(--spacing-2xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .launch-category {
+            display: inline-block;
+            background: #ffe5d4;
+            color: var(--color-lanzamiento);
+            padding: 6px 16px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-md);
+            align-self: flex-start;
+        }
+        
+        .launch-banner h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.3;
+        }
+        
+        .launch-description {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.7;
+        }
+        
+        .launch-benefits {
+            list-style: none;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .launch-benefits li {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            font-size: 15px;
+            color: var(--color-text-secondary);
+        }
+        
+        .launch-benefits li::before {
+            content: '✓';
+            color: var(--color-success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .launch-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .launch-cta-primary {
+            background: var(--color-lanzamiento);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.25);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .launch-cta-primary:hover {
+            background: var(--color-lanzamiento-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.35);
+        }
+        
+        .launch-cta-secondary {
+            background: transparent;
+            color: var(--color-lanzamiento);
+            border: 2px solid var(--color-lanzamiento);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .launch-cta-secondary:hover {
+            background: var(--color-lanzamiento);
+            color: white;
+        }
+        
+        /* =========================
+           DETAIL PAGE SECTION
+        ========================= */
+        
+        .page-separator {
+            margin: var(--spacing-2xl) 0;
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--color-border), transparent);
+        }
+        
+        .detail-page {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Hero Split Section */
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 500px;
+        }
+        
+        .hero-media-side {
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-media-side::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent);
+        }
+        
+        .hero-showcase {
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-showcase img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-content-side {
+            padding: var(--spacing-2xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f5 100%);
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: var(--color-lanzamiento);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-md);
+            align-self: flex-start;
+        }
+        
+        .hero-content-side h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+        }
+        
+        .hero-tagline {
+            font-size: 20px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            background: var(--color-lanzamiento);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: var(--radius-sm);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.3);
+            align-self: flex-start;
+        }
+        
+        .hero-cta:hover {
+            background: var(--color-lanzamiento-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(230, 126, 34, 0.4);
+        }
+        
+        /* Storytelling Section */
+        .storytelling-section {
+            padding: var(--spacing-2xl);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .storytelling-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        .storytelling-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .storytelling-section p:first-of-type::first-letter {
+            font-size: 56px;
+            font-weight: 700;
+            float: left;
+            line-height: 1;
+            margin-right: 8px;
+            color: var(--color-lanzamiento);
+        }
+        
+        /* Features Grid */
+        .features-section {
+            background: var(--color-background);
+            padding: var(--spacing-2xl);
+        }
+        
+        .features-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .feature-card p {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Preview Section */
+        .preview-section {
+            padding: var(--spacing-2xl);
+        }
+        
+        .preview-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+        
+        .preview-carousel {
+            background: var(--color-background);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .preview-image {
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Testimonials */
+        .testimonials-section {
+            background: var(--color-background);
+            padding: var(--spacing-2xl);
+        }
+        
+        .testimonials-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-md);
+            max-width: 700px;
+            margin: 0 auto var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .testimonial-text {
+            font-size: 18px;
+            font-style: italic;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--color-lanzamiento);
+        }
+        
+        .testimonial-info {
+            flex: 1;
+        }
+        
+        .testimonial-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .testimonial-role {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Final CTA */
+        .final-cta-section {
+            padding: var(--spacing-2xl);
+            text-align: center;
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            color: white;
+        }
+        
+        .final-cta-section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .final-cta-section p {
+            font-size: 20px;
+            margin-bottom: var(--spacing-xl);
+            opacity: 0.95;
+        }
+        
+        .final-cta-button {
+            background: white;
+            color: var(--color-lanzamiento);
+            border: none;
+            padding: 18px 48px;
+            border-radius: var(--radius-sm);
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .final-cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .launch-banner {
+                flex-direction: column;
+            }
+            
+            .launch-visual {
+                padding: var(--spacing-xl);
+            }
+            
+            .hero-split {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .launch-actions {
+                flex-direction: column;
+            }
+            
+            .launch-cta-primary,
+            .launch-cta-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .launch-banner h3 {
+                font-size: 22px;
+            }
+            
+            .hero-content-side h1 {
+                font-size: 28px;
+            }
+            
+            .hero-tagline {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===================================
+             PREVIEW CARDS SECTION
+        ==================================== -->
+        <section class="section-header">
+            <h1>Últimos Lanzamientos</h1>
+            <p>Descubre lo nuevo en Textknow</p>
+        </section>
+        
+        <!-- Launch Banner 1: Nuevo Libro -->
+        <div class="launch-banner" onclick="scrollToDetail()">
+            <span class="new-badge">🆕 Nuevo</span>
+            <div class="launch-visual">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450' viewBox='0 0 300 450'%3E%3Crect fill='%23ffffff' width='300' height='450'/%3E%3Crect fill='%234a7ba7' x='20' y='20' width='260' height='410' rx='8'/%3E%3Ctext x='50%25' y='45%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='32' fill='white' font-weight='bold'%3EFe en%3C/text%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='28' fill='white' font-weight='bold'%3ETiempos de%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='28' fill='white' font-weight='bold'%3ECambio%3C/text%3E%3C/svg%3E" alt="Fe en Tiempos de Cambio">
+            </div>
+            <div class="launch-content">
+                <span class="launch-category">Nuevo Libro</span>
+                <h3>Fe en Tiempos de Cambio</h3>
+                <p class="launch-description">
+                    Una guía práctica y profunda para mantener la esperanza y crecer espiritualmente en medio de los desafíos del mundo moderno.
+                </p>
+                <ul class="launch-benefits">
+                    <li>Escrito por reconocido autor cristiano</li>
+                    <li>Incluye guía de estudio grupal</li>
+                    <li>Disponible en formato físico y digital</li>
+                </ul>
+                <div class="launch-actions">
+                    <button class="launch-cta-primary">
+                        Descubrir ahora
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                    <button class="launch-cta-secondary">Ver vista previa</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Launch Banner 2: Convenio con Autor -->
+        <div class="launch-banner">
+            <span class="new-badge">Convenio</span>
+            <div class="launch-visual">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450' viewBox='0 0 300 450'%3E%3Crect fill='%23f8f9fa' width='300' height='450'/%3E%3Ctext x='50%25' y='30%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='%234a7ba7' font-weight='bold'%3EColección%3C/text%3E%3Ctext x='50%25' y='45%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='36' fill='%23e67e22' font-weight='bold'%3EJuan%3C/text%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='36' fill='%23e67e22' font-weight='bold'%3EMartínez%3C/text%3E%3Ctext x='50%25' y='70%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='%23666'%3E15 títulos disponibles%3C/text%3E%3C/svg%3E" alt="Colección Juan Martínez">
+            </div>
+            <div class="launch-content">
+                <span class="launch-category">Convenio Editorial</span>
+                <h3>Colección Completa de Juan Martínez</h3>
+                <p class="launch-description">
+                    Accede a toda la obra del reconocido teólogo y escritor, ahora disponible en Textknow con contenido exclusivo.
+                </p>
+                <ul class="launch-benefits">
+                    <li>15 títulos disponibles desde hoy</li>
+                    <li>Descuentos exclusivos para suscriptores</li>
+                    <li>Contenido adicional: entrevistas y videos</li>
+                </ul>
+                <div class="launch-actions">
+                    <button class="launch-cta-primary">
+                        Explorar colección
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                    <button class="launch-cta-secondary">Conocer al autor</button>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="page-separator">
+        
+        <!-- ===================================
+             DETAIL PAGE SECTION
+        ==================================== -->
+        <section class="detail-page" id="detail-page">
+            <!-- Hero Split Section -->
+            <div class="hero-split">
+                <div class="hero-media-side">
+                    <div class="hero-showcase">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect fill='%23ffffff' width='400' height='600'/%3E%3Crect fill='%234a7ba7' x='30' y='30' width='340' height='540' rx='12'/%3E%3Ctext x='50%25' y='35%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='48' fill='white' font-weight='bold'%3EFe en%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='42' fill='white' font-weight='bold'%3ETiempos de%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='42' fill='white' font-weight='bold'%3ECambio%3C/text%3E%3Ctext x='50%25' y='80%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='20' fill='white'%3EMaría Rodríguez%3C/text%3E%3C/svg%3E" alt="Portada del libro">
+                    </div>
+                </div>
+                <div class="hero-content-side">
+                    <span class="hero-badge">🆕 Nuevo Lanzamiento</span>
+                    <h1>Fe en Tiempos de Cambio</h1>
+                    <p class="hero-tagline">
+                        Descubre cómo mantener tu fe firme cuando todo a tu alrededor parece incierto.
+                    </p>
+                    <button class="hero-cta">Obtener ahora</button>
+                </div>
+            </div>
+            
+            <!-- Storytelling Section -->
+            <section class="storytelling-section">
+                <h2>Un nuevo horizonte se abre</h2>
+                <p>
+                    Vivimos en una época de cambios constantes y acelerados. La tecnología avanza, las sociedades se transforman, y a menudo nos encontramos navegando aguas desconocidas. En medio de esta vorágine, ¿cómo podemos mantener nuestra fe firme y vibrante?
+                </p>
+                <p>
+                    "Fe en Tiempos de Cambio" nace de años de estudio, reflexión y experiencia pastoral. La autora, María Rodríguez, ha acompañado a cientos de creyentes en sus travesías personales, y ha destilado en estas páginas las lecciones más valiosas para quienes buscan crecer espiritualmente sin importar las circunstancias externas.
+                </p>
+                <p>
+                    Este libro no es una colección de respuestas fáciles, sino una invitación a profundizar en la relación con Dios, a descubrir recursos espirituales que quizás desconocías, y a encontrar esperanza genuina incluso en los momentos más desafiantes.
+                </p>
+            </section>
+            
+            <!-- Features Grid -->
+            <section class="features-section">
+                <h2>¿Qué encontrarás en este libro?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Contenido Práctico</h3>
+                        <p>12 capítulos con ejercicios reflexivos y aplicaciones concretas para tu vida diaria.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Guía de Estudio</h3>
+                        <p>Incluye material adicional para grupos pequeños con preguntas de discusión.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💡</div>
+                        <h3>Perspectiva Fresca</h3>
+                        <p>Una mirada contemporánea sobre principios bíblicos atemporales.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Preview Section -->
+            <section class="preview-section">
+                <h2>Vista Previa</h2>
+                <div class="preview-carousel">
+                    <img class="preview-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400' viewBox='0 0 800 400'%3E%3Crect fill='%23f8f9fa' width='800' height='400'/%3E%3Ctext x='50%25' y='30%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='28' fill='%234a7ba7' font-weight='bold'%3ECapítulo 1: Anclados en la Tormenta%3C/text%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='%23666' text-align='center'%3E%22Cuando los vientos de cambio soplan con fuerza,%3C/text%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='%23666'%3Enuestra fe debe ser el ancla que nos mantiene firmes...%22%3C/text%3E%3Ctext x='50%25' y='75%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%23999'%3ELee las primeras 20 páginas gratuitamente%3C/text%3E%3C/svg%3E" alt="Vista previa del libro">
+                </div>
+            </section>
+            
+            <!-- Testimonials -->
+            <section class="testimonials-section">
+                <h2>Lo que dicen los lectores</h2>
+                <div class="testimonial">
+                    <p class="testimonial-text">
+                        "Este libro llegó en el momento perfecto de mi vida. Las palabras de María me ayudaron a encontrar paz y dirección cuando más lo necesitaba. Lo recomiendo ampliamente."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Carlos Méndez</div>
+                            <div class="testimonial-role">Líder de Ministerio, Buenos Aires</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-text">
+                        "La guía de estudio grupal es excepcional. Nuestro grupo de jóvenes tuvo conversaciones profundas y transformadoras gracias a las preguntas reflexivas que incluye."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Ana Torres</div>
+                            <div class="testimonial-role">Coordinadora de Jóvenes, Córdoba</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Final CTA -->
+            <section class="final-cta-section">
+                <h2>Comienza tu travesía hoy</h2>
+                <p>Disponible en formato físico y digital. Precio especial de lanzamiento.</p>
+                <button class="final-cta-button">Obtener mi ejemplar</button>
+            </section>
+        </section>
+    </div>
+    
+    <script>
+        function scrollToDetail() {
+            document.getElementById('detail-page').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

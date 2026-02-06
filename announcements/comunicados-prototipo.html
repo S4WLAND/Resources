@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicados - Textknow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --color-anuncio: #1976d2;
+            --color-impacto: #c2185b;
+            --color-actualizacion: #388e3c;
+            --color-celebracion: #f57c00;
+            --color-resumen: #7b1fa2;
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #666666;
+            --color-background: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-border: #e0e0e0;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--color-background);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        /* =========================
+           PREVIEW CARDS SECTION
+        ========================= */
+        
+        .section-header {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+        }
+        
+        .notices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        /* Notice Card */
+        .notice-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--color-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .notice-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        /* Media Header (opcional) */
+        .notice-media {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .notice-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .notice-card:hover .notice-media img {
+            transform: scale(1.05);
+        }
+        
+        /* Content */
+        .notice-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .notice-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .notice-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        
+        .notice-card:hover .notice-icon {
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .notice-icon.anuncio { background: #e3f2fd; }
+        .notice-icon.impacto { background: #fce4ec; }
+        .notice-icon.actualizacion { background: #e8f5e9; }
+        .notice-icon.celebracion { background: #fff3e0; }
+        .notice-icon.resumen { background: #f3e5f5; }
+        
+        .notice-category {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .notice-category.anuncio { color: var(--color-anuncio); }
+        .notice-category.impacto { color: var(--color-impacto); }
+        .notice-category.actualizacion { color: var(--color-actualizacion); }
+        .notice-category.celebracion { color: var(--color-celebracion); }
+        .notice-category.resumen { color: var(--color-resumen); }
+        
+        .notice-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .notice-summary {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .notice-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 13px;
+            color: #888;
+            margin-bottom: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .notice-meta svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+        
+        .notice-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+        
+        .notice-cta {
+            flex: 1;
+            background: transparent;
+            border: 2px solid var(--color-border);
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .notice-card.anuncio .notice-cta { border-color: var(--color-anuncio); color: var(--color-anuncio); }
+        .notice-card.impacto .notice-cta { border-color: var(--color-impacto); color: var(--color-impacto); }
+        .notice-card.actualizacion .notice-cta { border-color: var(--color-actualizacion); color: var(--color-actualizacion); }
+        .notice-card.celebracion .notice-cta { border-color: var(--color-celebracion); color: var(--color-celebracion); }
+        .notice-card.resumen .notice-cta { border-color: var(--color-resumen); color: var(--color-resumen); }
+        
+        .notice-card.anuncio .notice-cta:hover { background: var(--color-anuncio); color: white; }
+        .notice-card.impacto .notice-cta:hover { background: var(--color-impacto); color: white; }
+        .notice-card.actualizacion .notice-cta:hover { background: var(--color-actualizacion); color: white; }
+        .notice-card.celebracion .notice-cta:hover { background: var(--color-celebracion); color: white; }
+        .notice-card.resumen .notice-cta:hover { background: var(--color-resumen); color: white; }
+        
+        .share-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .share-btn:hover {
+            background: var(--color-background);
+            border-color: var(--color-text-secondary);
+        }
+        
+        .share-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--color-text-secondary);
+        }
+        
+        /* Featured/Destacado */
+        .notice-card.featured {
+            position: relative;
+            margin-top: var(--spacing-md);
+        }
+        
+        .notice-card.featured::before {
+            content: '⭐ Destacado';
+            position: absolute;
+            top: -12px;
+            left: var(--spacing-lg);
+            background: var(--color-celebracion);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 1;
+        }
+        
+        .notice-card.featured {
+            border-width: 3px;
+        }
+        
+        .notice-card.anuncio.featured { border-color: var(--color-anuncio); }
+        .notice-card.impacto.featured { border-color: var(--color-impacto); }
+        
+        /* =========================
+           DETAIL PAGE SECTION
+        ========================= */
+        
+        .page-separator {
+            margin: var(--spacing-2xl) 0;
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--color-border), transparent);
+        }
+        
+        .detail-page {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Hero Header (opcional con imagen) */
+        .article-hero {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .article-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .article-hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: var(--spacing-2xl);
+            color: white;
+        }
+        
+        /* Article Header */
+        .article-header {
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 14px;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-secondary);
+        }
+        
+        .breadcrumb a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .article-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .article-category-badge.anuncio {
+            background: #e3f2fd;
+            color: var(--color-anuncio);
+        }
+        
+        .article-category-badge.impacto {
+            background: #fce4ec;
+            color: var(--color-impacto);
+        }
+        
+        .article-category-badge.resumen {
+            background: #f3e5f5;
+            color: var(--color-resumen);
+        }
+        
+        .article-title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .article-metadata {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        
+        .article-metadata-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .article-metadata-item svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        /* Article Body */
+        .article-body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+        }
+        
+        .article-body h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: var(--spacing-2xl);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .article-body h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .article-body p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .article-body p:first-of-type::first-letter {
+            font-size: 72px;
+            font-weight: 700;
+            float: left;
+            line-height: 0.9;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+        
+        .article-body.impacto p:first-of-type::first-letter {
+            color: var(--color-impacto);
+        }
+        
+        .article-body.anuncio p:first-of-type::first-letter {
+            color: var(--color-anuncio);
+        }
+        
+        .article-body.resumen p:first-of-type::first-letter {
+            color: var(--color-resumen);
+        }
+        
+        /* Blockquote */
+        .article-body blockquote {
+            border-left: 4px solid var(--color-border);
+            padding-left: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+            font-style: italic;
+            font-size: 20px;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Info Box */
+        .info-callout {
+            background: var(--color-background);
+            border-left: 4px solid var(--color-anuncio);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-sm);
+            margin: var(--spacing-xl) 0;
+        }
+        
+        .info-callout h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-anuncio);
+        }
+        
+        .info-callout p {
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+        
+        /* Datos de Impacto */
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+        
+        .impact-stat {
+            background: var(--color-background);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .impact-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-impacto);
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .impact-label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Gallery (para resúmenes) */
+        .gallery-section {
+            margin: var(--spacing-2xl) 0;
+        }
+        
+        .gallery-section h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+        
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: var(--spacing-md);
+            font-size: 14px;
+        }
+        
+        /* Social Share */
+        .social-share {
+            background: var(--color-background);
+            padding: var(--spacing-xl);
+            text-align: center;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .social-share h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            color: white;
+        }
+        
+        .social-button.facebook { background: #1877f2; }
+        .social-button.twitter { background: #1da1f2; }
+        .social-button.whatsapp { background: #25d366; }
+        
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Related Section */
+        .related-section {
+            padding: var(--spacing-xl);
+            background: var(--color-background);
+        }
+        
+        .related-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notices-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-title {
+                font-size: 28px;
+            }
+            
+            .article-body h2 {
+                font-size: 24px;
+            }
+            
+            .article-body p {
+                font-size: 16px;
+            }
+            
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notice-actions {
+                flex-direction: column;
+            }
+            
+            .notice-cta {
+                width: 100%;
+            }
+            
+            .share-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===================================
+             PREVIEW CARDS SECTION
+        ==================================== -->
+        <section class="section-header">
+            <h1>Comunicados y Anuncios</h1>
+            <p>Mantente informado sobre nuestra comunidad</p>
+        </section>
+        
+        <div class="notices-grid">
+            <!-- Card 1: Con Media - Impacto -->
+            <article class="notice-card impacto featured" onclick="scrollToDetail()">
+                <div class="notice-media">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23c2185b;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23e91e63;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad1)' width='400' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='32' fill='white' font-weight='bold'%3E150 Familias%3C/text%3E%3C/svg%3E" alt="Impacto Comunitario">
+                </div>
+                <div class="notice-content">
+                    <div class="notice-header">
+                        <div class="notice-icon impacto">❤️</div>
+                        <span class="notice-category impacto">Impacto Social</span>
+                    </div>
+                    <h3>150 Familias Alcanzadas en Nuestra Última Campaña</h3>
+                    <p class="notice-summary">
+                        Gracias a tu generosidad, hemos podido entregar recursos educativos y alimentos a comunidades necesitadas. Juntos estamos haciendo la diferencia.
+                    </p>
+                    <div class="notice-meta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span>3 de febrero, 2026</span>
+                    </div>
+                    <div class="notice-actions">
+                        <button class="notice-cta">
+                            Leer completo
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </button>
+                        <div class="share-buttons">
+                            <button class="share-btn" aria-label="Compartir en Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn" aria-label="Compartir en Twitter">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22.46 6c-.85.38-1.78.64-2.75.76 1-.6 1.76-1.55 2.12-2.68-.93.55-1.96.95-3.06 1.17-.88-.94-2.13-1.53-3.51-1.53-2.66 0-4.81 2.16-4.81 4.81 0 .38.04.75.13 1.1-4-.2-7.54-2.12-9.91-5.04-.42.72-.66 1.55-.66 2.44 0 1.67.85 3.14 2.14 4-.79-.03-1.53-.24-2.18-.6v.06c0 2.33 1.66 4.28 3.86 4.72-.4.11-.83.17-1.27.17-.31 0-.62-.03-.92-.08.62 1.94 2.42 3.35 4.55 3.39-1.67 1.31-3.77 2.09-6.05 2.09-.39 0-.78-.02-1.17-.07 2.18 1.4 4.76 2.21 7.54 2.21 9.05 0 14-7.5 14-14 0-.21 0-.42-.02-.63.96-.69 1.8-1.56 2.46-2.55z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- Card 2: Sin Media - Anuncio -->
+            <article class="notice-card anuncio">
+                <div class="notice-content">
+                    <div class="notice-header">
+                        <div class="notice-icon anuncio">📢</div>
+                        <span class="notice-category anuncio">Anuncio General</span>
+                    </div>
+                    <h3>Nueva Plataforma de Donaciones en Línea</h3>
+                    <p class="notice-summary">
+                        Hemos lanzado nuestra plataforma segura para facilitar tus contribuciones y apoyar nuestros proyectos comunitarios. Ahora puedes donar de forma rápida y transparente.
+                    </p>
+                    <div class="notice-meta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span>5 de febrero, 2026</span>
+                    </div>
+                    <div class="notice-actions">
+                        <button class="notice-cta">
+                            Conocer más
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </button>
+                        <div class="share-buttons">
+                            <button class="share-btn" aria-label="Compartir en Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn" aria-label="Compartir en WhatsApp">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- Card 3: Resumen de Evento -->
+            <article class="notice-card resumen">
+                <div class="notice-media">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%237b1fa2;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%239c27b0;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad3)' width='400' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='white' font-weight='bold'%3EResumen del Encuentro%3C/text%3E%3C/svg%3E" alt="Resumen del Encuentro">
+                </div>
+                <div class="notice-content">
+                    <div class="notice-header">
+                        <div class="notice-icon resumen">📸</div>
+                        <span class="notice-category resumen">Resumen de Evento</span>
+                    </div>
+                    <h3>Así Vivimos el Encuentro de Jóvenes 2026</h3>
+                    <p class="notice-summary">
+                        Más de 200 jóvenes se reunieron en una jornada inolvidable de música, reflexión y comunidad. Revive los mejores momentos con nuestra galería fotográfica.
+                    </p>
+                    <div class="notice-meta">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span>30 de enero, 2026</span>
+                    </div>
+                    <div class="notice-actions">
+                        <button class="notice-cta">
+                            Ver galería
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </button>
+                        <div class="share-buttons">
+                            <button class="share-btn" aria-label="Compartir en Facebook">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                                </svg>
+                            </button>
+                            <button class="share-btn" aria-label="Compartir en Twitter">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M22.46 6c-.85.38-1.78.64-2.75.76 1-.6 1.76-1.55 2.12-2.68-.93.55-1.96.95-3.06 1.17-.88-.94-2.13-1.53-3.51-1.53-2.66 0-4.81 2.16-4.81 4.81 0 .38.04.75.13 1.1-4-.2-7.54-2.12-9.91-5.04-.42.72-.66 1.55-.66 2.44 0 1.67.85 3.14 2.14 4-.79-.03-1.53-.24-2.18-.6v.06c0 2.33 1.66 4.28 3.86 4.72-.4.11-.83.17-1.27.17-.31 0-.62-.03-.92-.08.62 1.94 2.42 3.35 4.55 3.39-1.67 1.31-3.77 2.09-6.05 2.09-.39 0-.78-.02-1.17-.07 2.18 1.4 4.76 2.21 7.54 2.21 9.05 0 14-7.5 14-14 0-.21 0-.42-.02-.63.96-.69 1.8-1.56 2.46-2.55z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <hr class="page-separator">
+        
+        <!-- ===================================
+             DETAIL PAGE SECTION - IMPACTO
+        ==================================== -->
+        <section class="detail-page" id="detail-page">
+            <!-- Header -->
+            <div class="article-header">
+                <div class="breadcrumb">
+                    <a href="#">Inicio</a>
+                    <span>›</span>
+                    <a href="#">Comunicados</a>
+                    <span>›</span>
+                    <span>Impacto Social</span>
+                </div>
+                <div class="article-category-badge impacto">
+                    ❤️ Impacto Social
+                </div>
+                <h1 class="article-title">150 Familias Alcanzadas en Nuestra Última Campaña</h1>
+                <div class="article-metadata">
+                    <div class="article-metadata-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span>3 de febrero, 2026</span>
+                    </div>
+                    <div class="article-metadata-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <span>Equipo Textknow</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Body -->
+            <div class="article-body impacto">
+                <p>
+                    Cuando comenzamos esta campaña hace tres meses, teníamos una meta clara: llegar a familias que necesitaban apoyo concreto en un momento difícil. Hoy, con profunda gratitud, compartimos que hemos superado nuestras expectativas iniciales.
+                </p>
+                
+                <p>
+                    Gracias a la generosidad de nuestra comunidad, hemos podido entregar paquetes de alimentos no perecederos, materiales educativos y recursos de apoyo a 150 familias en barrios periféricos de Corrientes. Cada paquete fue preparado con amor y oración, pensando en las necesidades reales de cada hogar.
+                </p>
+                
+                <div class="impact-stats">
+                    <div class="impact-stat">
+                        <div class="impact-number">150</div>
+                        <div class="impact-label">Familias Alcanzadas</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number">600</div>
+                        <div class="impact-label">Personas Beneficiadas</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number">3</div>
+                        <div class="impact-label">Barrios Visitados</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number">50+</div>
+                        <div class="impact-label">Voluntarios</div>
+                    </div>
+                </div>
+                
+                <h2>El Impacto en Números</h2>
+                <p>
+                    Los números cuentan parte de la historia, pero detrás de cada estadística hay rostros, nombres y vidas transformadas. Distribuimos más de 2 toneladas de alimentos, 300 kits escolares para niños y adolescentes, y proporcionamos orientación espiritual a quienes lo solicitaron.
+                </p>
+                
+                <blockquote>
+                    "No puedo expresar con palabras lo que significó para mi familia recibir este apoyo justo cuando más lo necesitábamos. Más allá de la ayuda material, sentimos el amor de Dios a través de ustedes."
+                    <footer>— María, beneficiaria en Barrio San Cayetano</footer>
+                </blockquote>
+                
+                <h2>Lo Que Viene</h2>
+                <p>
+                    Este no es el final, sino el comienzo de un compromiso continuo con nuestra comunidad. Estamos planificando la próxima fase que incluirá talleres de formación laboral, apoyo psicológico y un programa de acompañamiento a largo plazo para las familias que deseen participar.
+                </p>
+                
+                <div class="info-callout">
+                    <h4>¿Cómo puedes participar?</h4>
+                    <p>
+                        Si deseas ser parte de la próxima campaña, puedes registrarte como voluntario, realizar una donación o simplemente compartir esta información con tu red. Cada gesto cuenta.
+                    </p>
+                </div>
+                
+                <h2>Agradecimiento</h2>
+                <p>
+                    Nada de esto habría sido posible sin el compromiso de nuestra comunidad: a los donantes que aportaron generosamente, a los voluntarios que dedicaron su tiempo y energía, y a las organizaciones locales que facilitaron el acceso a las comunidades. A todos, infinitas gracias.
+                </p>
+                
+                <p>
+                    Seguiremos trabajando incansablemente para ser las manos y los pies de Cristo en nuestra ciudad. Este es solo el comienzo de una historia mucho más grande que Dios está escribiendo a través de nosotros.
+                </p>
+            </div>
+            
+            <!-- Social Share -->
+            <div class="social-share">
+                <h3>Compartir este comunicado</h3>
+                <div class="social-buttons">
+                    <button class="social-button facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                        </svg>
+                        Facebook
+                    </button>
+                    <button class="social-button twitter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.46 6c-.85.38-1.78.64-2.75.76 1-.6 1.76-1.55 2.12-2.68-.93.55-1.96.95-3.06 1.17-.88-.94-2.13-1.53-3.51-1.53-2.66 0-4.81 2.16-4.81 4.81 0 .38.04.75.13 1.1-4-.2-7.54-2.12-9.91-5.04-.42.72-.66 1.55-.66 2.44 0 1.67.85 3.14 2.14 4-.79-.03-1.53-.24-2.18-.6v.06c0 2.33 1.66 4.28 3.86 4.72-.4.11-.83.17-1.27.17-.31 0-.62-.03-.92-.08.62 1.94 2.42 3.35 4.55 3.39-1.67 1.31-3.77 2.09-6.05 2.09-.39 0-.78-.02-1.17-.07 2.18 1.4 4.76 2.21 7.54 2.21 9.05 0 14-7.5 14-14 0-.21 0-.42-.02-.63.96-.69 1.8-1.56 2.46-2.55z"/>
+                        </svg>
+                        Twitter
+                    </button>
+                    <button class="social-button whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                        WhatsApp
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Related -->
+            <div class="related-section">
+                <h3>Comunicados Relacionados</h3>
+                <div class="notices-grid">
+                    <article class="notice-card impacto">
+                        <div class="notice-content">
+                            <div class="notice-header">
+                                <div class="notice-icon impacto">❤️</div>
+                                <span class="notice-category impacto">Impacto Social</span>
+                            </div>
+                            <h3>Programa de Becas 2026 Ya Está Abierto</h3>
+                            <p class="notice-summary">
+                                Apoyamos a jóvenes talentosos con recursos limitados para que puedan continuar sus estudios superiores.
+                            </p>
+                            <div class="notice-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                </svg>
+                                <span>20 de enero, 2026</span>
+                            </div>
+                            <div class="notice-actions">
+                                <button class="notice-cta">
+                                    Leer completo
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                    </svg>
+                                </button>
+                                <div class="share-buttons">
+                                    <button class="share-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        function scrollToDetail() {
+            document.getElementById('detail-page').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
