@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Libreria Diseno Curvo Irregular CSS</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #111f36;
+        --panel-2: #1b2d4a;
+        --text: #e2e8f0;
+        --muted: #9fb3cc;
+        --accent: #f59e0b;
+        --accent-2: #38bdf8;
+        --ok: #22c55e;
+        --warn: #f97316;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(1300px 700px at 15% 0%, #14284a 0%, var(--bg) 60%);
+        color: var(--text);
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: minmax(320px, 420px) minmax(400px, 1fr);
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .panel {
+        background: linear-gradient(160deg, var(--panel) 0%, #0f1b31 100%);
+        border: 1px solid #23395a;
+        border-radius: 16px;
+        padding: 1rem;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.26);
+      }
+
+      h1 {
+        margin: 0 0 0.3rem;
+        font-size: 1.1rem;
+      }
+
+      .subtitle {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .group {
+        margin-bottom: 0.9rem;
+        border: 1px solid #223655;
+        border-radius: 12px;
+        padding: 0.75rem;
+        background: rgba(17, 31, 54, 0.65);
+      }
+
+      .group-title {
+        margin: 0 0 0.65rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #c7d7ec;
+      }
+
+      .field {
+        display: grid;
+        grid-template-columns: 120px 1fr 58px;
+        gap: 0.5rem;
+        align-items: center;
+        margin: 0.35rem 0;
+      }
+
+      .field label {
+        font-size: 0.84rem;
+        color: #c8d8ee;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--accent);
+      }
+
+      input[type="number"],
+      select {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #335179;
+        padding: 0.32rem 0.4rem;
+        background: var(--panel-2);
+        color: var(--text);
+        font-size: 0.82rem;
+      }
+
+      .inline {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .inline label {
+        font-size: 0.84rem;
+        color: #c8d8ee;
+      }
+
+      .preview-panel {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .preview-box {
+        position: relative;
+        border-radius: 16px;
+        border: 1px solid #23395a;
+        background:
+          linear-gradient(180deg, rgba(13, 29, 50, 0.58), rgba(10, 21, 40, 0.95)),
+          repeating-linear-gradient(
+            0deg,
+            rgba(147, 197, 253, 0.09) 0 1px,
+            transparent 1px 20px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(147, 197, 253, 0.09) 0 1px,
+            transparent 1px 20px
+          );
+        min-height: 540px;
+        overflow: hidden;
+      }
+
+      .preview-wrap {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .output {
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .output label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 0.78rem;
+        color: #c8d8ee;
+      }
+
+      textarea,
+      pre {
+        width: 100%;
+        margin: 0;
+        border-radius: 10px;
+        border: 1px solid #294565;
+        padding: 0.55rem 0.65rem;
+        font: 12px/1.4 Consolas, "Courier New", monospace;
+        color: #d9e7f7;
+        background: #0b1527;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      textarea {
+        min-height: 64px;
+        resize: vertical;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 1px solid #38608f;
+        background: linear-gradient(180deg, #264469, #1c3350);
+        color: #eaf2ff;
+        border-radius: 9px;
+        padding: 0.42rem 0.62rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+
+      button:hover {
+        filter: brightness(1.08);
+      }
+
+      .hint {
+        color: #9fb3cc;
+        font-size: 0.78rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        border: 1px solid;
+      }
+
+      .pill.ok {
+        color: #b5f0c4;
+        border-color: #2f7e4a;
+        background: rgba(34, 197, 94, 0.14);
+      }
+
+      .pill.warn {
+        color: #ffd7b0;
+        border-color: #9a5631;
+        background: rgba(249, 115, 22, 0.15);
+      }
+
+      @media (max-width: 1060px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .preview-box {
+          min-height: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <section class="panel">
+        <h1>Herramienta Visual de Muesca SVG</h1>
+        <p class="subtitle">
+          Ajusta pesos con deslizadores y genera un path para recorte irregular de esquina.
+        </p>
+
+        <div class="group">
+          <h2 class="group-title">Tamano Base</h2>
+          <div class="field">
+            <label for="shapeWidth">Ancho</label>
+            <input id="shapeWidth" type="range" min="120" max="560" step="1" value="220" />
+            <input id="shapeWidthNum" type="number" min="120" max="560" step="1" value="220" />
+          </div>
+          <div class="field">
+            <label for="shapeHeight">Alto</label>
+            <input id="shapeHeight" type="range" min="140" max="760" step="1" value="360" />
+            <input id="shapeHeightNum" type="number" min="140" max="760" step="1" value="360" />
+          </div>
+          <div class="field">
+            <label for="baseRadius">Radius Base</label>
+            <input id="baseRadius" type="range" min="0" max="80" step="1" value="18" />
+            <input id="baseRadiusNum" type="number" min="0" max="80" step="1" value="18" />
+          </div>
+          <div class="field">
+            <label for="corner">Esquina Muesca</label>
+            <select id="corner">
+              <option value="br">Inferior Derecha</option>
+              <option value="bl">Inferior Izquierda</option>
+              <option value="tr">Superior Derecha</option>
+              <option value="tl">Superior Izquierda</option>
+            </select>
+            <span></span>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2 class="group-title">Pesos de Muesca</h2>
+          <div class="field">
+            <label for="fillet">Peso Fillet</label>
+            <input id="fillet" type="range" min="1" max="48" step="1" value="8" />
+            <input id="filletNum" type="number" min="1" max="48" step="1" value="8" />
+          </div>
+          <div class="field">
+            <label for="bandTop">Banda Horizontal</label>
+            <input id="bandTop" type="range" min="0" max="80" step="1" value="10" />
+            <input id="bandTopNum" type="number" min="0" max="80" step="1" value="10" />
+          </div>
+          <div class="field">
+            <label for="bandSide">Banda Vertical</label>
+            <input id="bandSide" type="range" min="0" max="80" step="1" value="10" />
+            <input id="bandSideNum" type="number" min="0" max="80" step="1" value="10" />
+          </div>
+          <div class="field">
+            <label for="mainRx">Curva Grande X</label>
+            <input id="mainRx" type="range" min="8" max="220" step="1" value="44" />
+            <input id="mainRxNum" type="number" min="8" max="220" step="1" value="44" />
+          </div>
+          <div class="field">
+            <label for="mainRy">Curva Grande Y</label>
+            <input id="mainRy" type="range" min="8" max="220" step="1" value="44" />
+            <input id="mainRyNum" type="number" min="8" max="220" step="1" value="44" />
+          </div>
+          <div class="inline">
+            <input id="perfectCircle" type="checkbox" checked />
+            <label for="perfectCircle">Curva principal circular (Rx = Ry)</label>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2 class="group-title">Visualizacion</h2>
+          <div class="inline">
+            <input id="showGuides" type="checkbox" checked />
+            <label for="showGuides">Mostrar guias geometricas</label>
+          </div>
+          <div class="field">
+            <label for="previewScale">Zoom Preview</label>
+            <input id="previewScale" type="range" min="0.5" max="2.8" step="0.05" value="1.3" />
+            <input id="previewScaleNum" type="number" min="0.5" max="2.8" step="0.05" value="1.3" />
+          </div>
+          <p id="validationBadge" class="pill ok">Geometria valida</p>
+        </div>
+      </section>
+
+      <section class="preview-panel">
+        <div class="panel preview-box">
+          <div class="preview-wrap">
+            <svg id="previewSvg" width="720" height="520" viewBox="0 0 720 520" aria-label="preview">
+              <defs>
+                <clipPath id="toolClip" clipPathUnits="userSpaceOnUse">
+                  <path id="clipPathShape"></path>
+                </clipPath>
+              </defs>
+
+              <g id="shapeTransform">
+                <rect id="shapeFill" x="0" y="0" fill="url(#shapeGrad)" clip-path="url(#toolClip)"></rect>
+                <path id="shapeOutline" fill="none" stroke="none" stroke-width="0"></path>
+
+                <g id="guidesLayer" fill="none" stroke-width="1.4">
+                  <rect id="notchBox" stroke="#d946ef"></rect>
+                  <line id="bandHorizontal" stroke="#67e8f9"></line>
+                  <line id="bandVertical" stroke="#67e8f9"></line>
+                  <circle id="smallCircleTop" stroke="#f43f5e"></circle>
+                  <circle id="smallCircleBottom" stroke="#f43f5e"></circle>
+                  <ellipse id="mainCircle" stroke="#22c55e"></ellipse>
+                </g>
+              </g>
+
+              <defs>
+                <linearGradient id="shapeGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#b9d0f5"></stop>
+                  <stop offset="100%" stop-color="#87addf"></stop>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+        <div class="panel output">
+          <div>
+            <label for="pathOutPx">Path SVG (userSpaceOnUse)</label>
+            <textarea id="pathOutPx" readonly></textarea>
+          </div>
+          <div>
+            <label for="pathOutNorm">Path SVG (objectBoundingBox normalizado)</label>
+            <textarea id="pathOutNorm" readonly></textarea>
+          </div>
+          <div>
+            <label for="transformOut">Transform segun esquina</label>
+            <textarea id="transformOut" readonly></textarea>
+          </div>
+          <div>
+            <label for="snippetOut">Snippet completo de clipPath</label>
+            <pre id="snippetOut"></pre>
+          </div>
+          <div class="buttons">
+            <button data-copy="pathOutPx">Copiar Path Px</button>
+            <button data-copy="pathOutNorm">Copiar Path Normalizado</button>
+            <button data-copy="snippetOut">Copiar Snippet</button>
+          </div>
+          <p class="hint">
+            Nota: para Astro/Vue con `objectBoundingBox`, usa el path normalizado y su matriz transform.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const controls = {
+        shapeWidth: document.getElementById("shapeWidth"),
+        shapeWidthNum: document.getElementById("shapeWidthNum"),
+        shapeHeight: document.getElementById("shapeHeight"),
+        shapeHeightNum: document.getElementById("shapeHeightNum"),
+        baseRadius: document.getElementById("baseRadius"),
+        baseRadiusNum: document.getElementById("baseRadiusNum"),
+        corner: document.getElementById("corner"),
+        fillet: document.getElementById("fillet"),
+        filletNum: document.getElementById("filletNum"),
+        bandTop: document.getElementById("bandTop"),
+        bandTopNum: document.getElementById("bandTopNum"),
+        bandSide: document.getElementById("bandSide"),
+        bandSideNum: document.getElementById("bandSideNum"),
+        mainRx: document.getElementById("mainRx"),
+        mainRxNum: document.getElementById("mainRxNum"),
+        mainRy: document.getElementById("mainRy"),
+        mainRyNum: document.getElementById("mainRyNum"),
+        perfectCircle: document.getElementById("perfectCircle"),
+        showGuides: document.getElementById("showGuides"),
+        previewScale: document.getElementById("previewScale"),
+        previewScaleNum: document.getElementById("previewScaleNum"),
+        validationBadge: document.getElementById("validationBadge")
+      };
+
+      const ui = {
+        previewSvg: document.getElementById("previewSvg"),
+        shapeTransform: document.getElementById("shapeTransform"),
+        shapeFill: document.getElementById("shapeFill"),
+        shapeOutline: document.getElementById("shapeOutline"),
+        clipPathShape: document.getElementById("clipPathShape"),
+        guidesLayer: document.getElementById("guidesLayer"),
+        notchBox: document.getElementById("notchBox"),
+        bandHorizontal: document.getElementById("bandHorizontal"),
+        bandVertical: document.getElementById("bandVertical"),
+        smallCircleTop: document.getElementById("smallCircleTop"),
+        smallCircleBottom: document.getElementById("smallCircleBottom"),
+        mainCircle: document.getElementById("mainCircle"),
+        pathOutPx: document.getElementById("pathOutPx"),
+        pathOutNorm: document.getElementById("pathOutNorm"),
+        transformOut: document.getElementById("transformOut"),
+        snippetOut: document.getElementById("snippetOut")
+      };
+
+      const mirrorPairs = [
+        ["shapeWidth", "shapeWidthNum"],
+        ["shapeHeight", "shapeHeightNum"],
+        ["baseRadius", "baseRadiusNum"],
+        ["fillet", "filletNum"],
+        ["bandTop", "bandTopNum"],
+        ["bandSide", "bandSideNum"],
+        ["mainRx", "mainRxNum"],
+        ["mainRy", "mainRyNum"],
+        ["previewScale", "previewScaleNum"]
+      ];
+
+      function fmt(value) {
+        return Number(value).toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+      }
+
+      function syncPair(a, b) {
+        controls[a].addEventListener("input", () => {
+          controls[b].value = controls[a].value;
+          update();
+        });
+
+        controls[b].addEventListener("input", () => {
+          controls[a].value = controls[b].value;
+          update();
+        });
+      }
+
+      function transformForCorner(corner, width, height, normalized = false) {
+        if (corner === "br") return "";
+
+        if (normalized) {
+          if (corner === "bl") return "matrix(-1 0 0 1 1 0)";
+          if (corner === "tr") return "matrix(1 0 0 -1 0 1)";
+          return "matrix(-1 0 0 -1 1 1)";
+        }
+
+        if (corner === "bl") return `matrix(-1 0 0 1 ${fmt(width)} 0)`;
+        if (corner === "tr") return `matrix(1 0 0 -1 0 ${fmt(height)})`;
+        return `matrix(-1 0 0 -1 ${fmt(width)} ${fmt(height)})`;
+      }
+
+      function calcGeometry() {
+        const width = Number(controls.shapeWidth.value);
+        const height = Number(controls.shapeHeight.value);
+        const r = Number(controls.baseRadius.value);
+        const corner = controls.corner.value;
+        const f = Number(controls.fillet.value);
+        const bandTop = Number(controls.bandTop.value);
+        const bandSide = Number(controls.bandSide.value);
+        let mainRx = Number(controls.mainRx.value);
+        let mainRy = Number(controls.mainRy.value);
+
+        if (controls.perfectCircle.checked) {
+          mainRy = mainRx;
+          controls.mainRy.value = String(mainRy);
+          controls.mainRyNum.value = String(mainRy);
+        }
+
+        const maxNotchWidth = Math.max(1, width - r - 1);
+        const maxNotchHeight = Math.max(1, height - r - 1);
+
+        const desiredWidth = (2 * f) + bandTop + mainRx;
+        const desiredHeight = (2 * f) + bandSide + mainRy;
+
+        let valid = true;
+        if (desiredWidth > maxNotchWidth || desiredHeight > maxNotchHeight) {
+          valid = false;
+
+          if (controls.perfectCircle.checked) {
+            const maxCircleByWidth = maxNotchWidth - ((2 * f) + bandTop);
+            const maxCircleByHeight = maxNotchHeight - ((2 * f) + bandSide);
+            const circle = Math.max(1, Math.min(maxCircleByWidth, maxCircleByHeight));
+            mainRx = circle;
+            mainRy = circle;
+          } else {
+            mainRx = Math.max(1, Math.min(mainRx, maxNotchWidth - ((2 * f) + bandTop)));
+            mainRy = Math.max(1, Math.min(mainRy, maxNotchHeight - ((2 * f) + bandSide)));
+          }
+
+          controls.mainRx.value = String(Math.round(mainRx));
+          controls.mainRxNum.value = String(Math.round(mainRx));
+          controls.mainRy.value = String(Math.round(mainRy));
+          controls.mainRyNum.value = String(Math.round(mainRy));
+        }
+
+        const startY = height - ((2 * f) + bandSide + mainRy);
+        const p1x = width - f;
+        const p1y = startY + f;
+        const p2x = p1x - bandTop;
+        const p2y = p1y;
+        const p3x = p2x - mainRx;
+        const p3y = p2y + mainRy;
+        const p4x = p3x;
+        const p4y = height - f;
+        const p5x = p4x - f;
+        const p5y = height;
+
+        const dPx = [
+          `M ${fmt(r)} 0`,
+          `H ${fmt(width - r)}`,
+          `A ${fmt(r)} ${fmt(r)} 0 0 1 ${fmt(width)} ${fmt(r)}`,
+          `V ${fmt(startY)}`,
+          `A ${fmt(f)} ${fmt(f)} 0 0 1 ${fmt(p1x)} ${fmt(p1y)}`,
+          `H ${fmt(p2x)}`,
+          `A ${fmt(mainRx)} ${fmt(mainRy)} 0 0 0 ${fmt(p3x)} ${fmt(p3y)}`,
+          `V ${fmt(p4y)}`,
+          `A ${fmt(f)} ${fmt(f)} 0 0 1 ${fmt(p5x)} ${fmt(p5y)}`,
+          `H ${fmt(r)}`,
+          `A ${fmt(r)} ${fmt(r)} 0 0 1 0 ${fmt(height - r)}`,
+          `V ${fmt(r)}`,
+          `A ${fmt(r)} ${fmt(r)} 0 0 1 ${fmt(r)} 0`,
+          `Z`
+        ].join(" ");
+
+        const n = {
+          r: r / width,
+          wr: r / width,
+          hr: r / height,
+          width,
+          height,
+          startY: startY / height,
+          fX: f / width,
+          fY: f / height,
+          p1x: p1x / width,
+          p1y: p1y / height,
+          p2x: p2x / width,
+          p2y: p2y / height,
+          p3x: p3x / width,
+          p3y: p3y / height,
+          p4y: p4y / height,
+          p5x: p5x / width,
+          p5y: 1,
+          mainRx: mainRx / width,
+          mainRy: mainRy / height,
+          wrCorner: r / width,
+          hrCorner: r / height
+        };
+
+        const dNorm = [
+          `M ${fmt(n.wrCorner)} 0`,
+          `H ${fmt(1 - n.wrCorner)}`,
+          `A ${fmt(n.wrCorner)} ${fmt(n.hrCorner)} 0 0 1 1 ${fmt(n.hrCorner)}`,
+          `V ${fmt(n.startY)}`,
+          `A ${fmt(n.fX)} ${fmt(n.fY)} 0 0 1 ${fmt(n.p1x)} ${fmt(n.p1y)}`,
+          `H ${fmt(n.p2x)}`,
+          `A ${fmt(n.mainRx)} ${fmt(n.mainRy)} 0 0 0 ${fmt(n.p3x)} ${fmt(n.p3y)}`,
+          `V ${fmt(n.p4y)}`,
+          `A ${fmt(n.fX)} ${fmt(n.fY)} 0 0 1 ${fmt(n.p5x)} ${fmt(n.p5y)}`,
+          `H ${fmt(n.wrCorner)}`,
+          `A ${fmt(n.wrCorner)} ${fmt(n.hrCorner)} 0 0 1 0 ${fmt(1 - n.hrCorner)}`,
+          `V ${fmt(n.hrCorner)}`,
+          `A ${fmt(n.wrCorner)} ${fmt(n.hrCorner)} 0 0 1 ${fmt(n.wrCorner)} 0`,
+          `Z`
+        ].join(" ");
+
+        const notchBox = {
+          x: width - ((2 * f) + bandTop + mainRx),
+          y: height - ((2 * f) + bandSide + mainRy),
+          width: (2 * f) + bandTop + mainRx,
+          height: (2 * f) + bandSide + mainRy
+        };
+
+        return {
+          width,
+          height,
+          r,
+          corner,
+          valid,
+          dPx,
+          dNorm,
+          transformPx: transformForCorner(corner, width, height, false),
+          transformNorm: transformForCorner(corner, width, height, true),
+          guides: {
+            notchBox,
+            bandHorizontal: { x1: p1x, y1: p1y, x2: p2x, y2: p2y },
+            bandVertical: { x1: p3x, y1: p3y, x2: p4x, y2: p4y },
+            smallTop: { cx: p1x, cy: p1y, r: f },
+            smallBottom: { cx: p4x, cy: p4y, r: f },
+            main: { cx: p2x, cy: p3y, rx: mainRx, ry: mainRy }
+          }
+        };
+      }
+
+      function update() {
+        const g = calcGeometry();
+
+        controls.mainRy.disabled = controls.perfectCircle.checked;
+        controls.mainRyNum.disabled = controls.perfectCircle.checked;
+
+        controls.validationBadge.textContent = g.valid
+          ? "Geometria valida"
+          : "Se ajustaron valores para evitar overflow";
+        controls.validationBadge.className = `pill ${g.valid ? "ok" : "warn"}`;
+
+        const scale = Number(controls.previewScale.value);
+        const px = Math.max(20, Math.min(640, g.width * scale));
+        const py = Math.max(20, Math.min(680, g.height * scale));
+        const offsetX = (720 - px) / 2;
+        const offsetY = (520 - py) / 2;
+
+        ui.shapeTransform.setAttribute(
+          "transform",
+          `translate(${fmt(offsetX)},${fmt(offsetY)}) scale(${fmt(scale)}) ${g.transformPx || ""}`.trim()
+        );
+
+        ui.shapeFill.setAttribute("width", String(g.width));
+        ui.shapeFill.setAttribute("height", String(g.height));
+        ui.clipPathShape.setAttribute("d", g.dPx);
+        ui.clipPathShape.setAttribute("transform", g.transformPx);
+        ui.shapeOutline.setAttribute("d", g.dPx);
+
+        const guide = g.guides;
+        ui.notchBox.setAttribute("x", fmt(guide.notchBox.x));
+        ui.notchBox.setAttribute("y", fmt(guide.notchBox.y));
+        ui.notchBox.setAttribute("width", fmt(guide.notchBox.width));
+        ui.notchBox.setAttribute("height", fmt(guide.notchBox.height));
+
+        ui.bandHorizontal.setAttribute("x1", fmt(guide.bandHorizontal.x1));
+        ui.bandHorizontal.setAttribute("y1", fmt(guide.bandHorizontal.y1));
+        ui.bandHorizontal.setAttribute("x2", fmt(guide.bandHorizontal.x2));
+        ui.bandHorizontal.setAttribute("y2", fmt(guide.bandHorizontal.y2));
+
+        ui.bandVertical.setAttribute("x1", fmt(guide.bandVertical.x1));
+        ui.bandVertical.setAttribute("y1", fmt(guide.bandVertical.y1));
+        ui.bandVertical.setAttribute("x2", fmt(guide.bandVertical.x2));
+        ui.bandVertical.setAttribute("y2", fmt(guide.bandVertical.y2));
+
+        ui.smallCircleTop.setAttribute("cx", fmt(guide.smallTop.cx));
+        ui.smallCircleTop.setAttribute("cy", fmt(guide.smallTop.cy));
+        ui.smallCircleTop.setAttribute("r", fmt(guide.smallTop.r));
+
+        ui.smallCircleBottom.setAttribute("cx", fmt(guide.smallBottom.cx));
+        ui.smallCircleBottom.setAttribute("cy", fmt(guide.smallBottom.cy));
+        ui.smallCircleBottom.setAttribute("r", fmt(guide.smallBottom.r));
+
+        ui.mainCircle.setAttribute("cx", fmt(guide.main.cx));
+        ui.mainCircle.setAttribute("cy", fmt(guide.main.cy));
+        ui.mainCircle.setAttribute("rx", fmt(guide.main.rx));
+        ui.mainCircle.setAttribute("ry", fmt(guide.main.ry));
+
+        ui.guidesLayer.style.display = controls.showGuides.checked ? "block" : "none";
+
+        ui.pathOutPx.value = g.dPx;
+        ui.pathOutNorm.value = g.dNorm;
+        ui.transformOut.value =
+          `userSpaceOnUse: ${g.transformPx || "(sin transform)"}\n` +
+          `objectBoundingBox: ${g.transformNorm || "(sin transform)"}`;
+
+        const snippet = [
+          `<clipPath id="product-card-shape" clipPathUnits="objectBoundingBox">`,
+          `  <path d="${g.dNorm}"${g.transformNorm ? ` transform="${g.transformNorm}"` : ""} />`,
+          `</clipPath>`
+        ].join("\n");
+        ui.snippetOut.textContent = snippet;
+      }
+
+      mirrorPairs.forEach(([a, b]) => syncPair(a, b));
+      controls.corner.addEventListener("change", update);
+      controls.perfectCircle.addEventListener("change", update);
+      controls.showGuides.addEventListener("change", update);
+
+      document.querySelectorAll("button[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const id = button.getAttribute("data-copy");
+          if (!id) return;
+          const target = document.getElementById(id);
+          if (!target) return;
+
+          const text = target.value ?? target.textContent ?? "";
+          try {
+            await navigator.clipboard.writeText(text);
+            button.textContent = "Copiado";
+            setTimeout(() => {
+              button.textContent = button.textContent === "Copiado"
+                ? (id === "pathOutPx"
+                  ? "Copiar Path Px"
+                  : id === "pathOutNorm"
+                    ? "Copiar Path Normalizado"
+                    : "Copiar Snippet")
+                : button.textContent;
+            }, 900);
+          } catch (error) {
+            console.error("No se pudo copiar", error);
+          }
+        });
+      });
+
+      update();
+    </script>
+  </body>
+</html>
